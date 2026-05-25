@@ -16,7 +16,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // Configuraciones del Reactor extraídas de tus capturas
+        // Datos de tu proyecto real en Supabase
         const PROJECT_ID = "manaerjtcurxbcsozqchsh";
         const API_KEY = "sb_publishable_LTZY6uMVRCnd_K41dneBtw_xn3XU0ke";
 
@@ -28,7 +28,7 @@
             React.useEffect(() => {
                 async function cargarNave() {
                     try {
-                        // Consultamos directo a la API REST de Supabase esquivando bloqueos de cliente
+                        // Consulta directa a la API REST para evitar bloqueos del cliente de Supabase
                         const url = `https://${PROJECT_ID}.supabase.co/rest/v1/naves?perfil_slug=eq.gonmo&select=*`;
                         
                         const response = await fetch(url, {
@@ -54,7 +54,7 @@
                         }
                     } catch (err) {
                         setErrorMsg("Error de conexión de red: " + err.message);
-                    } finaly {
+                    } finally {
                         setLoading(false);
                     }
                 }
@@ -66,16 +66,16 @@
             if (errorMsg) {
                 return (
                     <div className="flex h-screen flex-col items-center justify-center font-mono text-red-500 text-lg text-center p-4">
-                        <span>⚠️ ERROR DE RED DETECTADO</span>
+                        <span>⚠️ ERROR DE CONEXIÓN DETECTADO</span>
                         <span className="text-xs text-slate-400 mt-2 bg-slate-900 p-3 rounded border border-slate-800 max-w-md">
                             {errorMsg}
                         </span>
-                        <p className="text-[11px] text-slate-500 mt-4">Asegurate de haber cargado al menos una fila con el perfil_slug "gonmo" en tu tabla de Supabase.</p>
+                        <p className="text-[11px] text-slate-500 mt-4">Asegurate de que exista una fila con perfil_slug "gonmo" en tu tabla naves de Supabase.</p>
                     </div>
                 );
             }
 
-            // Estructuras de respaldo por si el contenido de la columna está en desarrollo
+            // Estructuras de respaldo por si el JSON interno todavía no está estructurado en 'content'
             const uiConfig = registroNave?.content?.ui_config || { nave_title: "NAVE GONMO", logo_id: "SÃO PAULO REACTOR" };
             const zones = registroNave?.content?.zones || { alpha_items: [], practica_items: [] };
             const aiBrain = registroNave?.content?.ai_brain || { agent_name: "Astro-Gonmo" };
@@ -91,9 +91,9 @@
                         </header>
 
                         <div className="bg-slate-900/60 border border-emerald-500/30 p-4 rounded-xl font-mono text-xs text-slate-300">
-                            <p className="text-emerald-400 font-bold mb-1">✓ CONEXIÓN DIRECTA EXITOSA</p>
+                            <p className="text-emerald-400 font-bold mb-1">✓ CONEXIÓN DIRECTA EN LÍNEA</p>
                             <p>Origen de datos: <span className="text-cyan-400">tabla naves</span></p>
-                            <p className="truncate text-slate-400 mt-1">ID Único: {registroNave?.id}</p>
+                            <p className="truncate text-slate-400 mt-1">ID Fila: {registroNave?.id}</p>
                         </div>
 
                         {zones.alpha_items.length > 0 ? (
@@ -109,7 +109,7 @@
                                 </div>
                             </div>
                         ) : (
-                            <div className="text-xs font-mono text-slate-500 italic">No hay items cargados en la columna content.</div>
+                            <div className="text-xs font-mono text-slate-500 italic">Conexión establecida. No se detectaron sub-items estructurados en la columna content todavía.</div>
                         )}
                     </div>
 
