@@ -17,10 +17,11 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // 1. Conectamos al reactor de Supabase (Puse tu URL del proyecto)
-        const SUPABASE_URL = "https://manaerjtcurxbcsozqch.supabase.co";
-        // IMPORTANTE: Acá vas a tener que cambiar esto por tu clave Anon Real de Supabase
-        const SUPABASE_ANON_KEY = "TU_CLAVE_ANON_ANOTADA_DE_SUPABASE"; 
+        // 1. URL corregida con tu ID real de la captura (termina en sh)
+        const SUPABASE_URL = "https://manaerjtcurxbcsozqchsh.supabase.co";
+        
+        // 2. ACÁ PEGA TU CLAVE LARGA (dejá las comillas puestas)
+        const SUPABASE_ANON_KEY = "sb_publishable_LTZY6uMVRCnd_K41dneBtw_xn3XU0ke"; 
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -30,20 +31,25 @@
 
             React.useEffect(() => {
                 async function cargarNave() {
-                    const { data, error } = await supabaseClient
-                        .from('naves')
-                        .select('content')
-                        .eq('perfil_slug', 'gonmo')
-                        .single();
+                    try {
+                        const { data, error } = await supabaseClient
+                            .from('naves')
+                            .select('content')
+                            .eq('perfil_slug', 'gonmo')
+                            .single();
 
-                    if (data) setNaveData(data.content);
-                    setLoading(false);
+                        if (data) setNaveData(data.content);
+                    } catch (err) {
+                        console.error(err);
+                    } finally {
+                        setLoading(false);
+                    }
                 }
                 cargarNave();
             }, []);
 
             if (loading) return <div className="flex h-screen items-center justify-center font-mono animate-pulse text-cyan-400 text-xl">CARGANDO RECOLECTORES DE LA NAVE...</div>;
-            if (!naveData) return <div className="flex h-screen items-center justify-center font-mono text-red-500 text-xl">ERROR: REVISÁ TU KEY ANONIMA EN EL CÓDIGO</div>;
+            if (!naveData) return <div className="flex h-screen items-center justify-center font-mono text-red-500 text-xl text-center p-4">ERROR: REVISÁ TU KEY ANONIMA EN EL CÓDIGO</div>;
 
             return (
                 <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden">
@@ -132,4 +138,3 @@
     </script>
 </body>
 </html>
-
