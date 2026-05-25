@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nave Dashboard - Gonmo</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body { background-color: #020617; color: #f8fafc; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // 1. Conectamos al reactor de Supabase (Puse tu URL del proyecto)
+        const SUPABASE_URL = "https://manaerjtcurxbcsozqch.supabase.co";
+        // IMPORTANTE: Acá vas a tener que cambiar esto por tu clave Anon Real de Supabase
+        const SUPABASE_ANON_KEY = "TU_CLAVE_ANON_ANOTADA_DE_SUPABASE"; 
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function NaveDashboard() {
+            const [naveData, setNaveData] = React.useState(null);
+            const [loading, setLoading] = React.useState(true);
+
+            React.useEffect(() => {
+                async function cargarNave() {
+                    const { data, error } = await supabaseClient
+                        .from('naves')
+                        .select('content')
+                        .eq('perfil_slug', 'gonmo')
+                        .single();
+
+                    if (data) setNaveData(data.content);
+                    setLoading(false);
+                }
+                cargarNave();
+            }, []);
+
+            if (loading) return <div className="flex h-screen items-center justify-center font-mono animate-pulse text-cyan-400 text-xl">CARGANDO RECOLECTORES DE LA NAVE...</div>;
+            if (!naveData) return <div className="flex h-screen items-center justify-center font-mono text-red-500 text-xl">ERROR: REVISÁ TU KEY ANONIMA EN EL CÓDIGO</div>;
+
+            return (
+                <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden">
+                    
+                    {/* SECCIÓN IZQUIERDA: CATÁLOGO DINÁMICO */}
+                    <div className="w-full md:w-1/2 h-1/2 md:h-full overflow-y-auto border-b md:border-b-0 md:border-r border-slate-800 p-6 space-y-6">
+                        <header className="border-b border-cyan-500/30 pb-4">
+                            <h1 className="text-2xl font-black tracking-widest text-cyan-400">{naveData.ui_config.nave_title}</h1>
+                            <p className="text-xs text-slate-400 mt-1 font-mono">REACTOR ID: {naveData.ui_config.logo_id}</p>
+                        </header>
+
+                        {/* Zona Alpha */}
+                        <div>
+                            <h2 className="text-lg font-bold text-amber-400 mb-3 tracking-wider">// ZONA ALPHA</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {naveData.zones.alpha_items.map(item => (
+                                    <div key={item.id} className="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                                        <h3 className="font-bold text-base">{item.title}</h3>
+                                        <p className="text-xs text-slate-400 mt-1 min-h-[32px]">{item.description}</p>
+                                        <div className="mt-3 flex justify-between items-center">
+                                            <span className="text-emerald-400 font-mono font-bold">${item.price_sale.toLocaleString()}</span>
+                                            <span className="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-400 font-mono">STK: {item.stock}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Zona Práctica */}
+                        <div>
+                            <h2 className="text-lg font-bold text-purple-400 mb-3 tracking-wider">// ZONA PRÁCTICA</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {naveData.zones.practica_items.map(item => (
+                                    <div key={item.id} className="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                                        <h3 className="font-bold text-base">{item.title}</h3>
+                                        <p className="text-xs text-slate-400 mt-1 min-h-[32px]">{item.description}</p>
+                                        <div className="mt-3 flex justify-between items-center">
+                                            <span className="text-emerald-400 font-mono font-bold">${item.price_sale.toLocaleString()}</span>
+                                            <span className="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-400 font-mono">STK: {item.stock}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* SECCIÓN DERECHA: CHAT CON IA */}
+                    <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col bg-slate-950/40">
+                        <div className="p-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping" />
+                                <span className="font-mono font-bold text-slate-200">{naveData.ai_brain.agent_name}</span>
+                            </div>
+                            <span className="text-[10px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-2 py-0.5 rounded font-mono">ONLINE</span>
+                        </div>
+
+                        {/* Historial del Chat */}
+                        <div className="flex-1 p-4 overflow-y-auto space-y-4 font-mono text-xs">
+                            <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl max-w-[85%]">
+                                <p className="text-cyan-400 text-[10px] mb-1">🤖 {naveData.ai_brain.agent_name}</p>
+                                <p className="text-slate-300">¡Che, bienvenido a la Nave Gonmo en Río Grande! Acá tengo el radar activado. ¿Qué andás buscando para tu setup hoy vof?</p>
+                            </div>
+                        </div>
+
+                        {/* Input de Control */}
+                        <div className="p-4 bg-slate-900 border-t border-slate-800">
+                            <div className="flex space-x-2">
+                                <input 
+                                    type="text" 
+                                    placeholder="Escribile a Astro-Gonmo..." 
+                                    className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"
+                                />
+                                <button className="bg-cyan-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs font-mono">
+                                    OK
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<NaveDashboard />);
+    </script>
+</body>
+</html>
+
