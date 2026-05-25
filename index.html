@@ -8,7 +8,6 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         body { background-color: #020617; color: #f8fafc; }
     </style>
@@ -17,13 +16,9 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // 1. URL de tu reactor de Supabase (termina en sh)
-        const SUPABASE_URL = "https://manaerjtcurxbcsozqchsh.supabase.co";
-        
-        // 2. Tu llave pública exacta de la captura
-        const SUPABASE_ANON_KEY = "sb_publishable_LTZY6uMVRCnd_K41dneBtw_xn3XU0ke"; 
-
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Configuraciones del Reactor extraídas de tus capturas
+        const PROJECT_ID = "manaerjtcurxbcsozqchsh";
+        const API_KEY = "sb_publishable_LTZY6uMVRCnd_K41dneBtw_xn3XU0ke";
 
         function NaveDashboard() {
             const [registroNave, setRegistroNave] = React.useState(null);
@@ -33,23 +28,33 @@
             React.useEffect(() => {
                 async function cargarNave() {
                     try {
-                        // Buscamos en la tabla 'naves' donde el perfil sea 'gonmo'
-                        const { data, error } = await supabaseClient
-                            .from('naves')
-                            .select('*')
-                            .eq('perfil_slug', 'gonmo')
-                            .maybeSingle();
+                        // Consultamos directo a la API REST de Supabase esquivando bloqueos de cliente
+                        const url = `https://${PROJECT_ID}.supabase.co/rest/v1/naves?perfil_slug=eq.gonmo&select=*`;
+                        
+                        const response = await fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'apikey': API_KEY,
+                                'Authorization': `Bearer ${API_KEY}`,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        });
 
-                        if (error) {
-                            setErrorMsg("Error de Supabase: " + error.message);
-                        } else if (data) {
-                            setRegistroNave(data);
+                        if (!response.ok) {
+                            throw new Error(`Error de respuesta del servidor: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+
+                        if (data && data.length > 0) {
+                            setRegistroNave(data[0]);
                         } else {
-                            setErrorMsg("No se encontró ningún registro con perfil_slug 'gonmo'");
+                            setErrorMsg("No se encontró ningún registro con perfil_slug 'gonmo' en la tabla naves.");
                         }
                     } catch (err) {
-                        setErrorMsg("Error de conexión: " + err.message);
-                    } finally {
+                        setErrorMsg("Error de conexión de red: " + err.message);
+                    } finaly {
                         setLoading(false);
                     }
                 }
@@ -57,9 +62,20 @@
             }, []);
 
             if (loading) return <div className="flex h-screen items-center justify-center font-mono animate-pulse text-cyan-400 text-xl">CONECTANDO CON EL REACTOR DE LA NAVE...</div>;
-            if (errorMsg) return <div className="flex h-screen flex-col items-center justify-center font-mono text-red-500 text-lg text-center p-4"><span>⚠️ ERROR DETECTADO</span><span className="text-xs text-slate-400 mt-2 bg-slate-900 p-2 rounded border border-slate-800">{errorMsg}</span></div>;
+            
+            if (errorMsg) {
+                return (
+                    <div className="flex h-screen flex-col items-center justify-center font-mono text-red-500 text-lg text-center p-4">
+                        <span>⚠️ ERROR DE RED DETECTADO</span>
+                        <span className="text-xs text-slate-400 mt-2 bg-slate-900 p-3 rounded border border-slate-800 max-w-md">
+                            {errorMsg}
+                        </span>
+                        <p className="text-[11px] text-slate-500 mt-4">Asegurate de haber cargado al menos una fila con el perfil_slug "gonmo" en tu tabla de Supabase.</p>
+                    </div>
+                );
+            }
 
-            // Extraemos configuraciones seguras por si la columna content está vacía
+            // Estructuras de respaldo por si el contenido de la columna está en desarrollo
             const uiConfig = registroNave?.content?.ui_config || { nave_title: "NAVE GONMO", logo_id: "SÃO PAULO REACTOR" };
             const zones = registroNave?.content?.zones || { alpha_items: [], practica_items: [] };
             const aiBrain = registroNave?.content?.ai_brain || { agent_name: "Astro-Gonmo" };
@@ -67,22 +83,20 @@
             return (
                 <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden">
                     
-                    {/* SECCIÓN IZQUIERDA: CATÁLOGO DINÁMICO */}
+                    {/* SECCIÓN IZQUIERDA: DASHBOARD */}
                     <div className="w-full md:w-1/2 h-1/2 md:h-full overflow-y-auto border-b md:border-b-0 md:border-r border-slate-800 p-6 space-y-6">
                         <header className="border-b border-cyan-500/30 pb-4">
                             <h1 className="text-2xl font-black tracking-widest text-cyan-400">{uiConfig.nave_title}</h1>
-                            <p className="text-xs text-slate-400 mt-1 font-mono">REACTOR ID: manaerjtcurxbcsozqchsh</p>
+                            <p className="text-xs text-slate-400 mt-1 font-mono">REACTOR ID: {PROJECT_ID}</p>
                         </header>
 
-                        {/* Estado del Registro */}
                         <div className="bg-slate-900/60 border border-emerald-500/30 p-4 rounded-xl font-mono text-xs text-slate-300">
-                            <p className="text-emerald-400 font-bold mb-1">✓ CONEXIÓN EXITOSA</p>
-                            <p>Tabla apuntada: <span className="text-cyan-400">naves</span></p>
-                            <p className="truncate">ID Fila: {registroNave?.id}</p>
+                            <p className="text-emerald-400 font-bold mb-1">✓ CONEXIÓN DIRECTA EXITOSA</p>
+                            <p>Origen de datos: <span className="text-cyan-400">tabla naves</span></p>
+                            <p className="truncate text-slate-400 mt-1">ID Único: {registroNave?.id}</p>
                         </div>
 
-                        {/* Listado de items (si existen en content) */}
-                        {zones.alpha_items.length > 0 && (
+                        {zones.alpha_items.length > 0 ? (
                             <div>
                                 <h2 className="text-lg font-bold text-amber-400 mb-3 tracking-wider">// ZONA ALPHA</h2>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -94,6 +108,8 @@
                                     ))}
                                 </div>
                             </div>
+                        ) : (
+                            <div className="text-xs font-mono text-slate-500 italic">No hay items cargados en la columna content.</div>
                         )}
                     </div>
 
@@ -107,15 +123,13 @@
                             <span className="text-[10px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-2 py-0.5 rounded font-mono">ONLINE</span>
                         </div>
 
-                        {/* Historial del Chat */}
                         <div className="flex-1 p-4 overflow-y-auto space-y-4 font-mono text-xs">
                             <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl max-w-[85%]">
                                 <p className="text-cyan-400 text-[10px] mb-1">🤖 {aiBrain.agent_name}</p>
-                                <p className="text-slate-300">¡Conexión establecida con la tabla naves, Fabián! El radar en Río Grande está encendido y operando sin errores de código. ¿Qué módulo querés activar ahora?</p>
+                                <p className="text-slate-300">¡Bypass de red completado con éxito, Fabián! Logramos conectar tu web en GitHub con Supabase sin interferencias de CORS. El radar en Río Grande está en línea. ¿Qué módulo activamos hoy?</p>
                             </div>
                         </div>
 
-                        {/* Input de Control */}
                         <div className="p-4 bg-slate-900 border-t border-slate-800">
                             <div className="flex space-x-2">
                                 <input 
