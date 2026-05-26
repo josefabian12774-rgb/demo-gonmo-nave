@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE — PUSHUP CUSTOM V2.5</title>
+    <title>GONMO NAVE — PUSHUP CUSTOM V2.6</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -74,17 +74,17 @@
             align-items: center;
         }
         .hologram-robot-box {
-            width: 80px;
-            height: 115px;
+            width: 110px;
+            height: 150px;
             position: relative;
             animation: levitateQuantum 3.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.6));
+            filter: drop-shadow(0 0 15px rgba(34, 211, 238, 0.75));
         }
 
         /* LEVITACIÓN SUAVE ANTIGRAVEDAD */
         @keyframes levitateQuantum {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-8px); }
         }
 
         /* ANIMACIÓN QUANTUM PARA EL MODAL CENTRAL */
@@ -189,29 +189,20 @@
                             </div>
                         </div>
 
-                        {/* CENTRAL EJE CON TU ROBOT REAL INYECTADO */}
+                        {/* CENTRAL EJE CON TU ROBOT REAL DE CUERPO COMPLETO INYECTADO */}
                         <div class="astro-center pointer-events-none">
-                            <div class="hologram-robot-box pointer-events-auto cursor-pointer flex items-center justify-center" onClick={() => console.log('Astro-Gonmo Core invocado.')}>
+                            <div class="hologram-robot-box pointer-events-auto flex items-center justify-center">
                                 
                                 <img 
                                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" 
                                     alt="Astro-Gonmo Hologram" 
                                     class="w-full h-full object-contain block"
-                                    onError={(e) => {
-                                        e.target.classList.add('hidden');
-                                        e.target.nextSibling.classList.remove('hidden');
-                                    }} 
                                 />
                                 
-                                {/* Respaldo técnico si falla la carga */}
-                                <div class="w-full h-full flex flex-col items-center justify-center absolute inset-0 hidden border border-cyan-500/30 bg-slate-950/40 rounded-xl">
-                                    <i class="bi bi-robot text-cyan-400 text-3xl"></i>
-                                    <span class="text-[7px] text-cyan-400/70 font-bold uppercase tracking-widest mt-1">HOLO_CORE</span>
-                                </div>
                             </div>
                             
                             {/* Proyección del haz de luz holográfico inferior */}
-                            <div class="w-10 h-1.5 bg-cyan-400/20 blur-[3px] rounded-full mt-1 shadow-[0_0_8px_rgba(34,211,238,0.5)]"></div>
+                            <div class="w-14 h-1.5 bg-cyan-400/25 blur-[2px] rounded-full mt-1 shadow-[0_0_10px_rgba(34,211,238,0.6)]"></div>
                         </div>
 
                     </main>
