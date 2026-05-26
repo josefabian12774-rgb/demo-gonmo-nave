@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE — CORRECCION PUSHUP V2.4</title>
+    <title>GONMO NAVE — PUSHUP CUSTOM V2.5</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -23,7 +23,7 @@
         }
         .font-space { font-family: 'Space Grotesk', sans-serif; }
 
-        /* SCROLL INDEPENDIENTE FORZADO (Contenedores fijos aislados) */
+        /* SCROLL INDEPENDIENTE AISLADO */
         .col-nave {
             height: calc(100vh - 128px);
             overflow-y: scroll;
@@ -31,10 +31,9 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
-        /* Deshabilitar barras visuales pero mantener el drag nativo */
         .col-nave::-webkit-scrollbar { display: none; }
 
-        /* Estructura de Silicio Cian (Alpha) */
+        /* Placas de Silicio por Sector */
         .silicon-alpha {
             background-color: #060b19;
             background-image: 
@@ -43,8 +42,6 @@
                 radial-gradient(circle at 50% 50%, rgba(17, 28, 58, 0.8), #050914);
             background-size: 20px 20px, 20px 20px, 100% 100%;
         }
-
-        /* Estructura de Silicio Industrial (Práctica) */
         .silicon-practica {
             background-color: #eab308;
             background-image: 
@@ -54,7 +51,6 @@
             background-size: 25px 25px, 25px 25px, 100% 100%;
         }
 
-        /* Tarjetas de Silicio */
         .card-alpha-silicon {
             background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
             border: 2px solid rgba(6, 182, 212, 0.2);
@@ -66,7 +62,6 @@
             box-shadow: 4px 4px 0px #0f172a, 0 8px 16px rgba(0,0,0,0.15);
         }
 
-        /* Eje Central exacto para el Avatar */
         .astro-center {
             position: absolute;
             top: 50%;
@@ -75,13 +70,13 @@
             z-index: 40;
         }
 
-        /* PUSH-UP QUANTUM: REVENTANDO EL CENTRO DE LA PANTALLA */
-        @keyframes pushUpCenter {
-            0% { transform: scale(0.4) translateY(50px); opacity: 0; filter: blur(8px); }
+        /* ANIMACIÓN QUANTUM PARA EL MODAL CENTRAL */
+        @keyframes pushUpQuantum {
+            0% { transform: scale(0.5) translateY(30px); opacity: 0; filter: blur(5px); }
             100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
         }
-        .animate-quantum-center {
-            animation: pushUpCenter 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        .animate-quantum {
+            animation: pushUpQuantum 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
         }
     </style>
 </head>
@@ -92,17 +87,16 @@
         function GonmoNaveSplit() {
             const [selectedProduct, setSelectedProduct] = React.useState(null);
 
-            // Añadidos más elementos para garantizar que haya contenido suficiente para scrollear
             const productosAlpha = [
-                { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada. Latencia cero absoluta.", color: "text-cyan-400", borderColor: "border-cyan-400/40" },
-                { id: 2, title: "TITAN RDX", spec: "12GB GDDR6", price: "$1.299", icon: "bi-gpu-card", code: "G12", detail: "Microprocesador tensorial masivo con soporte nativo para trazado de rayos y cálculo complejo.", color: "text-purple-400", borderColor: "border-purple-400/40" },
-                { id: 3, title: "K-BOARD 75", spec: "MECHANICAL RGB", price: "$220.00", icon: "bi-keyboard", code: "K75", detail: "Plataforma compacta hot-swappable con switches lubricados de fábrica y keycaps PBT.", color: "text-emerald-400", borderColor: "border-emerald-400/40" }
+                { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada. Latencia cero absoluta.", color: "text-cyan-400", side: "ALPHA" },
+                { id: 2, title: "TITAN RDX", spec: "12GB GDDR6", price: "$1.299", icon: "bi-gpu-card", code: "G12", detail: "Microprocesador tensorial masivo con soporte nativo para trazado de rayos y cálculo complejo.", color: "text-purple-400", side: "ALPHA" },
+                { id: 3, title: "K-BOARD 75", spec: "MECHANICAL RGB", price: "$220.00", icon: "bi-keyboard", code: "K75", detail: "Plataforma compacta hot-swappable con switches lubricados de fábrica y keycaps PBT.", color: "text-emerald-400", side: "ALPHA" }
             ];
 
             const productosPractica = [
-                { id: 4, title: "DRILL 18V", spec: "POWER TORQUE", price: "$249.99", icon: "bi-nut", code: "T18", detail: "Motor industrial brushless de torque continuo, chasis de policarbonato reforzado anti-caídas.", color: "text-amber-500", borderColor: "border-amber-500/40" },
-                { id: 5, title: "AMBI-LIGHT", spec: "SMART WIFI", price: "$169.99", icon: "bi-lightbulb", code: "L04", detail: "Lámpara domótica con matriz LED sintonizable y sincronización de audio de baja latencia.", color: "text-orange-400", borderColor: "border-orange-400/40" },
-                { id: 6, title: "ROUTER CNC", spec: "MICRO MILLING", price: "$450.00", icon: "bi-cpu", code: "C09", detail: "Fresadora de precisión milimétrica guiada por controlador integrado de estado sólido.", color: "text-slate-900", borderColor: "border-slate-900/40" }
+                { id: 4, title: "DRILL 18V", spec: "POWER TORQUE", price: "$249.99", icon: "bi-nut", code: "T18", detail: "Motor industrial brushless de torque continuo, chasis de policarbonato reforzado anti-caídas.", color: "text-amber-500", side: "PRACTICA" },
+                { id: 5, title: "AMBI-LIGHT", spec: "SMART WIFI", price: "$169.99", icon: "bi-lightbulb", code: "L04", detail: "Lámpara domótica con matriz LED sintonizable y sincronización de audio de baja latencia.", color: "text-orange-400", side: "PRACTICA" },
+                { id: 6, title: "ROUTER CNC", spec: "MICRO MILLING", price: "$450.00", icon: "bi-cpu", code: "C09", detail: "Fresadora de precisión milimétrica guiada por controlador integrado de estado sólido.", color: "text-amber-600", side: "PRACTICA" }
             ];
 
             return (
@@ -117,10 +111,10 @@
                         <i class="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
 
-                    {/* GRILLA INTERFAZ DUAL */}
+                    {/* INTERFAZ DUAL */}
                     <main class="flex-1 w-full flex relative overflow-hidden">
                         
-                        {/* COLUMNA IZQUIERDA (ALPHA) */}
+                        {/* ZONA ALPHA */}
                         <div class="w-1/2 col-nave silicon-alpha px-2 py-4 border-r border-white/10">
                             <div class="mb-4 text-center border-b border-cyan-500/30 pb-2 sticky top-0 bg-[#060b19]/90 backdrop-blur-md z-20 rounded-b-lg">
                                 <h2 class="text-[10px] font-black font-space tracking-widest text-cyan-400">// SILICIO ALPHA</h2>
@@ -149,7 +143,7 @@
                             </div>
                         </div>
 
-                        {/* COLUMNA DERECHA (PRÁCTICA) */}
+                        {/* ZONA PRÁCTICA */}
                         <div class="w-1/2 col-nave silicon-practica px-2 py-4">
                             <div class="mb-4 text-center border-b border-slate-950/20 pb-2 sticky top-0 bg-[#eab308]/90 backdrop-blur-md z-20 rounded-b-lg">
                                 <h2 class="text-[10px] font-black font-space tracking-widest text-slate-950">// SILICIO PRÁCTICA</h2>
@@ -178,7 +172,7 @@
                             </div>
                         </div>
 
-                        {/* ASTRO-GONMO CENTER (CON LA CONDICION BASE64 INYECTADA) */}
+                        {/* CENTRAL EJE */}
                         <div class="astro-center pointer-events-none">
                             <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-500 to-sky-600 border-2 border-slate-950 shadow-2xl flex items-center justify-center pointer-events-auto cursor-pointer overflow-hidden">
                                 <img 
@@ -193,49 +187,57 @@
 
                     </main>
 
-                    {/* MODAL COMPLETAMENTE CENTRALIZADO Y OSCURO (COHERENCIA ALPHA) */}
+                    {/* MODAL CON CONTEXTO CROMÁTICO SEGÚN SECTOR */}
                     {selectedProduct && (
-                        <div class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/85 backdrop-blur-lg">
-                            {/* Tap de fondo para salir */}
+                        <div class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/90 backdrop-blur-md">
                             <div class="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
                             
-                            {/* Ventana de Impacto de Silicio Oscuro */}
-                            <div class={`w-full max-w-[320px] bg-gradient-to-b from-[#0f172a] to-[#020617] rounded-3xl p-5 relative z-10 border-2 text-white shadow-[0_20px_50px_rgba(0,0,0,0.8)] animate-quantum-center ${selectedProduct.borderColor}`}>
+                            <div class={`w-full max-w-[310px] bg-gradient-to-b from-[#0b0f19] to-[#03050a] rounded-3xl p-5 relative z-10 border-2 text-white shadow-[0_25px_60px_rgba(0,0,0,0.9)] animate-quantum ${
+                                selectedProduct.side === 'ALPHA' ? 'border-cyan-500/50' : 'border-amber-500/60'
+                            }`}>
                                 
-                                {/* Botón de Cierre */}
+                                {/* Botón de salida */}
                                 <button 
                                     onClick={() => setSelectedProduct(null)}
-                                    class="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs text-white/70 active:scale-90"
+                                    class="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs text-white/60 active:scale-90"
                                 >
                                     <i class="bi bi-x-lg"></i>
                                 </button>
 
-                                {/* Icono y Título */}
-                                <div class="flex flex-col items-center text-center mt-2 mb-4">
-                                    <div class="w-16 h-16 rounded-2xl bg-slate-950/80 border border-white/5 flex items-center justify-center text-3xl mb-3 shadow-inner">
-                                        <i class={`bi ${selectedProduct.icon} ${selectedProduct.color}`}></i>
-                                    </div>
-                                    <span class="text-[9px] font-black font-space tracking-widest text-white/40 uppercase bg-white/5 px-2.5 py-0.5 rounded-full">
-                                        MÓDULO // {selectedProduct.code}
-                                    </span>
-                                    <h2 class="text-lg font-black font-space tracking-tight mt-2 uppercase">{selectedProduct.title}</h2>
-                                    <p class={`text-[10px] font-bold tracking-widest uppercase mt-0.5 ${selectedProduct.color}`}>
+                                {/* SHOWCASE VISUAL DE PRODUCTO EN EL PUSH-UP */}
+                                <div class={`w-full h-28 rounded-2xl flex items-center justify-center border mb-4 relative overflow-hidden bg-slate-950/60 ${
+                                    selectedProduct.side === 'ALPHA' ? 'border-cyan-500/20 shadow-[inset_0_0_15px_rgba(6,182,212,0.1)]' : 'border-amber-500/20 shadow-[inset_0_0_15px_rgba(234,179,8,0.1)]'
+                                }`}>
+                                    <i class={`bi ${selectedProduct.icon} text-4xl ${selectedProduct.color} drop-shadow-[0_0_10px_currentColor]`}></i>
+                                    <span class="absolute bottom-2 right-3 text-[9px] font-bold font-space opacity-30 tracking-widest">{selectedProduct.code}</span>
+                                </div>
+
+                                {/* Textos de Información */}
+                                <div class="text-center mb-4">
+                                    <h2 class="text-lg font-black font-space tracking-tight uppercase leading-none">{selectedProduct.title}</h2>
+                                    <p class={`text-[9px] font-bold tracking-widest uppercase mt-1 ${
+                                        selectedProduct.side === 'ALPHA' ? 'text-cyan-400' : 'text-amber-500'
+                                    }`}>
                                         {selectedProduct.spec}
                                     </p>
                                 </div>
 
-                                {/* Descripción de Alta Tecnología */}
-                                <p class="text-xs text-slate-300 leading-relaxed text-center px-2 mb-5">
+                                <p class="text-[11px] text-slate-400 leading-relaxed text-center px-1 mb-4">
                                     {selectedProduct.detail}
                                 </p>
 
-                                {/* Contenedor de Precio y Compra */}
-                                <div class="border-t border-white/10 pt-4 flex flex-col space-y-3">
+                                {/* Barra comercial inyectable personalizada por color de sector */}
+                                <div class="border-t border-white/10 pt-3 flex flex-col space-y-2">
                                     <div class="flex justify-between items-center px-1">
-                                        <span class="text-[9px] font-bold font-space text-white/40 uppercase">VALOR ESTRUCTURA</span>
+                                        <span class="text-[8px] font-bold font-space text-white/30 uppercase">VALOR NAVE</span>
                                         <span class="text-xl font-black font-space text-white tracking-tight">{selectedProduct.price}</span>
                                     </div>
-                                    <button class="w-full h-11 rounded-xl bg-cyan-400 text-slate-950 font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 shadow-[0_4px_12px_rgba(34,211,238,0.3)] active:scale-95 transition-transform">
+                                    
+                                    <button class={`w-full h-11 rounded-xl font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-95 ${
+                                        selectedProduct.side === 'ALPHA'
+                                            ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_15px_rgba(34,211,238,0.3)]'
+                                            : 'bg-amber-500 text-slate-950 shadow-[0_4px_15px_rgba(234,179,8,0.3)]'
+                                    }`}>
                                         <i class="bi bi-lightning-charge-fill"></i>
                                         <span>INJECTAR EN NAVE</span>
                                     </button>
