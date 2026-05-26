@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE — INYECCIÓN BASE64 V2.5</title>
+    <title>GONMO NAVE — PUSHUP CUSTOM V2.5</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -62,12 +62,31 @@
             box-shadow: 4px 4px 0px #0f172a, 0 8px 16px rgba(0,0,0,0.15);
         }
 
+        /* Contenedor central ASTRO acotado y definido */
         .astro-center {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .assistant-sphere {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #e0f2fe, #38bdf8 45%, #0284c7 70%, #0369a1 100%);
+            box-shadow: inset -8px -8px 16px rgba(0,0,0,0.5), 0 12px 24px rgba(14, 165, 233, 0.4);
+            position: relative;
+            animation: levitateQuantum 4s ease-in-out infinite;
+        }
+
+        /* ANIMACIÓN DE FLOTACIÓN PREMIUM */
+        @keyframes levitateQuantum {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-4px) scale(1.02); }
         }
 
         /* ANIMACIÓN QUANTUM PARA EL MODAL CENTRAL */
@@ -86,9 +105,6 @@
     <script type="text/babel">
         function GonmoNaveSplit() {
             const [selectedProduct, setSelectedProduct] = React.useState(null);
-            
-            // Estado de respaldo por si la imagen Base64 real no carga
-            const [base64Loaded, setBase64Loaded] = React.useState(false);
 
             const productosAlpha = [
                 { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada. Latencia cero absoluta.", color: "text-cyan-400", side: "ALPHA" },
@@ -109,7 +125,7 @@
                     <header class="h-16 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10 z-50">
                         <div class="flex items-center space-x-2">
                             <i class="bi bi-list text-xl text-white"></i>
-                            <span class="text-sm font-bold tracking-tight font-space text-white">GONMO NAVE</span>
+                            <span class="text-sm font-bold tracking-tight font-space text-white uppercase">GONMO NAVE</span>
                         </div>
                         <i class="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
@@ -117,10 +133,10 @@
                     {/* INTERFAZ DUAL COEXISTENTE ESTRICTO */}
                     <main class="flex-1 w-full flex relative overflow-hidden">
                         
-                        {/* ZONA ALPHA: IZQUIERDA (50%) */}
+                        {/* ZONA ALPHA (50%) */}
                         <div class="w-1/2 col-nave silicon-alpha px-2 py-4 border-r border-white/10">
                             <div class="mb-4 text-center border-b border-cyan-500/30 pb-2 sticky top-0 bg-[#060b19]/90 backdrop-blur-md z-20 rounded-b-lg">
-                                <h2 class="text-[10px] font-black font-space tracking-widest text-cyan-400 uppercase leading-none">// SILICIO ALPHA</h2>
+                                <h2 class="text-[10px] font-black font-space tracking-widest text-cyan-400 leading-none uppercase">// SILICIO ALPHA</h2>
                             </div>
                             <div class="space-y-4 pb-20">
                                 {productosAlpha.map(p => (
@@ -146,10 +162,10 @@
                             </div>
                         </div>
 
-                        {/* ZONA PRÁCTICA: DERECHA (50%) */}
+                        {/* ZONA PRÁCTICA (50%) */}
                         <div class="w-1/2 col-nave silicon-practica px-2 py-4">
                             <div class="mb-4 text-center border-b border-slate-950/20 pb-2 sticky top-0 bg-[#eab308]/90 backdrop-blur-md z-20 rounded-b-lg">
-                                <h2 class="text-[10px] font-black font-space tracking-widest text-slate-950 uppercase leading-none">// SILICIO PRÁCTICA</h2>
+                                <h2 class="text-[10px] font-black font-space tracking-widest text-slate-950 leading-none uppercase">// SILICIO PRÁCTICA</h2>
                             </div>
                             <div class="space-y-4 pb-20">
                                 {productosPractica.map(p => (
@@ -175,25 +191,28 @@
                             </div>
                         </div>
 
-                        {/* ASTRO-GONMO FLOTANTE CENTRAL EJE (DIRECTIVA BASE64 INJECTADA) */}
+                        {/* CENTRAL EJE ASTRO-GONMO (ROBOT REAL BASE64) */}
                         <div class="astro-center pointer-events-none">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-500 to-sky-600 border-2 border-slate-950 shadow-2xl flex items-center justify-center pointer-events-auto cursor-pointer overflow-hidden relative">
+                            <div class="assistant-sphere pointer-events-auto cursor-pointer overflow-hidden border border-white/10" onClick={() => console.log('Astro-Gonmo Core invocado.')}>
                                 
-                                {/* REEMPLAZÁ ESTE STRING DE ABAJO CON TU BASE64 REAL */}
+                                {/* REEMPLAZÁ ESTE STRING CON TU BASE64 REAL */}
                                 <img 
                                     src="data:image/png;base64, ...[INJECTA_TU_BASE64_REAL_AQUI]... " 
-                                    alt="Astro-Gonmo real" 
-                                    class={`w-full h-full object-cover transition-opacity duration-300 ${base64Loaded ? 'opacity-100' : 'opacity-0 hidden'}`}
-                                    onLoad={() => setBase64Loaded(true)}
+                                    alt="Astro-Gonmo" 
+                                    class="w-full h-full object-cover block"
                                     onError={(e) => {
-                                        setBase64Loaded(false);
                                         e.target.classList.add('hidden');
+                                        e.target.nextSibling.classList.remove('hidden');
                                     }} 
                                 />
-
-                                {/* Icono de Respaldo: Solo visible si la Base64 real falla */}
-                                <i class={`bi bi-robot text-slate-950 text-lg transition-opacity duration-300 ${base64Loaded ? 'opacity-0 hidden' : 'opacity-100'}`}></i>
+                                {/* Respaldo: Solo visible si la Base64 real falla */}
+                                <div class="w-full h-full flex flex-col items-center justify-center absolute inset-0 hidden">
+                                    <i class="bi bi-robot text-slate-950 text-2xl drop-shadow-md"></i>
+                                    <span class="text-[8px] text-slate-950/50 font-bold uppercase tracking-widest mt-1">CORE</span>
+                                </div>
                             </div>
+                            {/* Proyección de profundidad */}
+                            <div class="w-7 h-1 bg-cyan-500/10 blur-[2px] rounded-full mt-2 transition-all"></div>
                         </div>
 
                     </main>
@@ -241,14 +260,12 @@
                                         <span class="text-xl font-black font-space text-white tracking-tight">{selectedProduct.price}</span>
                                     </div>
                                     
-                                    {/* BOTÓN "INYECTAR": HANDLER DE VINCULACIÓN SUPABASE PREPARADO */}
-                                    <button 
-                                        onClick={() => console.log('Simulación comercial disparada con ID:', selectedProduct.id, selectedProduct)}
-                                        class={`w-full h-11 rounded-xl font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-95 ${
-                                            selectedProduct.side === 'ALPHA'
-                                                ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_15px_rgba(34,211,238,0.3)]'
-                                                : 'bg-amber-500 text-slate-950 shadow-[0_4px_15px_rgba(234,179,8,0.3)]'
-                                        }`}>
+                                    {/* BOTÓN "INYECTAR" */}
+                                    <button class={`w-full h-11 rounded-xl font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-95 ${
+                                        selectedProduct.side === 'ALPHA'
+                                            ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_15px_rgba(34,211,238,0.3)]'
+                                            : 'bg-amber-500 text-slate-950 shadow-[0_4px_15px_rgba(234,179,8,0.3)]'
+                                    }`}>
                                         <i class="bi bi-lightning-charge-fill"></i>
                                         <span>INYECTAR EN NAVE</span>
                                     </button>
@@ -258,20 +275,21 @@
                         </div>
                     )}
 
-                    {/* BARRA INFERIOR RESTABLECIDA */}
+                    {/* BARRA INFERIOR RESTABLECIDA CON ICONOS MINIMALISTAS */}
                     <nav class="h-16 w-full bg-slate-950 border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
-                        <div class="flex flex-col items-center text-cyan-400">
-                            <i class="bi bi-grid-1x2-fill text-base"></i>
-                            <span class="text-[8px] font-bold tracking-wider mt-0.5 font-space">NAVE</span>
+                        <div class="flex flex-col items-center text-cyan-400 relative">
+                            <i class="bi bi-cart3 text-lg"></i>
+                            <span class="text-[8px] font-bold tracking-wider mt-0.5 font-space">CARRITO</span>
+                            <span class="absolute top-0 right-3 bg-red-500 text-white font-bold text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-space">3</span>
                         </div>
                         <div class="flex flex-col items-center hover:text-white transition-colors">
-                            <i class="bi bi-person text-base"></i>
+                            <i class="bi bi-person text-lg"></i>
                             <span class="text-[8px] font-medium tracking-wider mt-0.5 uppercase">PERFIL</span>
                         </div>
                         <div class="flex flex-col items-center hover:text-white transition-colors relative">
-                            <i class="bi bi-bell text-base"></i>
+                            <i class="bi bi-bell text-lg"></i>
                             <span class="text-[8px] font-medium tracking-wider mt-0.5 uppercase">NOTIFICACIONES</span>
-                            <span class="absolute top-1.5 right-5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                            <span class="absolute top-1 right-5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                         </div>
                     </nav>
 
