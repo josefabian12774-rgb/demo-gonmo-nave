@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE — SILICIO EXTRA V2.3</title>
+    <title>GONMO NAVE — CORRECCION PUSHUP V2.4</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -23,7 +23,7 @@
         }
         .font-space { font-family: 'Space Grotesk', sans-serif; }
 
-        /* Contenedores con Scroll Independiente Estricto */
+        /* SCROLL INDEPENDIENTE FORZADO (Contenedores fijos aislados) */
         .col-nave {
             height: calc(100vh - 128px);
             overflow-y: scroll;
@@ -31,9 +31,10 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
+        /* Deshabilitar barras visuales pero mantener el drag nativo */
         .col-nave::-webkit-scrollbar { display: none; }
 
-        /* TEXTURA DE SILICIO MEJORADA ALPHA (Circuitos Cian Eléctricos) */
+        /* Estructura de Silicio Cian (Alpha) */
         .silicon-alpha {
             background-color: #060b19;
             background-image: 
@@ -43,31 +44,29 @@
             background-size: 20px 20px, 20px 20px, 100% 100%;
         }
 
-        /* TEXTURA DE SILICIO MEJORADA PRÁCTICA (Microchips Industriales sobre Amarillo) */
+        /* Estructura de Silicio Industrial (Práctica) */
         .silicon-practica {
             background-color: #eab308;
             background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.06) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.06) 2px, transparent 2px),
+                linear-gradient(rgba(0, 0, 0, 0.07) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.07) 2px, transparent 2px),
                 radial-gradient(circle at 50% 50%, #f4d03f, #ca8a04);
             background-size: 25px 25px, 25px 25px, 100% 100%;
         }
 
-        /* Tarjeta Alpha con Relieve de Microchip Protegido */
+        /* Tarjetas de Silicio */
         .card-alpha-silicon {
             background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
             border: 2px solid rgba(6, 182, 212, 0.2);
-            box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.1), 0 12px 24px rgba(0,0,0,0.6);
+            box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.1), 0 12px 24px rgba(0,0,0,0.5);
         }
-
-        /* Tarjeta Práctica Industrial Pesada */
         .card-practica-silicon {
             background: #ffffff;
             border: 2px solid #0f172a;
-            box-shadow: 4px 4px 0px #0f172a, 0 10px 20px rgba(0,0,0,0.15);
+            box-shadow: 4px 4px 0px #0f172a, 0 8px 16px rgba(0,0,0,0.15);
         }
 
-        /* Eje Central para Astro-Gonmo */
+        /* Eje Central exacto para el Avatar */
         .astro-center {
             position: absolute;
             top: 50%;
@@ -76,14 +75,13 @@
             z-index: 40;
         }
 
-        /* ANIMACIÓN ESPECTACULAR PARA PUSH-UP MODAL (Efecto Escala Cuántica) */
-        @keyframes modalShow {
-            0% { transform: scale(0.3) rotate(-5deg); opacity: 0; filter: blur(10px); }
-            70% { transform: scale(1.05) rotate(1deg); opacity: 1; filter: blur(0); }
-            100% { transform: scale(1) rotate(0deg); }
+        /* PUSH-UP QUANTUM: REVENTANDO EL CENTRO DE LA PANTALLA */
+        @keyframes pushUpCenter {
+            0% { transform: scale(0.4) translateY(50px); opacity: 0; filter: blur(8px); }
+            100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
         }
-        .animate-pushup {
-            animation: modalShow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        .animate-quantum-center {
+            animation: pushUpCenter 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
     </style>
 </head>
@@ -92,23 +90,25 @@
 
     <script type="text/babel">
         function GonmoNaveSplit() {
-            // Estado para controlar el Producto Activo en el Push-Up espectacular
             const [selectedProduct, setSelectedProduct] = React.useState(null);
 
+            // Añadidos más elementos para garantizar que haya contenido suficiente para scrollear
             const productosAlpha = [
-                { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos ultra-rápidos de silicio puro, latencia cero para entornos Alpha.", color: "text-cyan-400", bgVector: "bg-cyan-500/10 text-cyan-400" },
-                { id: 2, title: "TITAN RDX", spec: "12GB GDDR6", price: "$1.299", icon: "bi-gpu-card", code: "G12", detail: "Arquitectura masiva con núcleos tensoriales dedicados para trazado de rayos en tiempo real.", color: "text-purple-400", bgVector: "bg-purple-500/10 text-purple-400" }
+                { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada. Latencia cero absoluta.", color: "text-cyan-400", borderColor: "border-cyan-400/40" },
+                { id: 2, title: "TITAN RDX", spec: "12GB GDDR6", price: "$1.299", icon: "bi-gpu-card", code: "G12", detail: "Microprocesador tensorial masivo con soporte nativo para trazado de rayos y cálculo complejo.", color: "text-purple-400", borderColor: "border-purple-400/40" },
+                { id: 3, title: "K-BOARD 75", spec: "MECHANICAL RGB", price: "$220.00", icon: "bi-keyboard", code: "K75", detail: "Plataforma compacta hot-swappable con switches lubricados de fábrica y keycaps PBT.", color: "text-emerald-400", borderColor: "border-emerald-400/40" }
             ];
 
             const productosPractica = [
-                { id: 3, title: "DRILL 18V", spec: "POWER TORQUE", price: "$249.99", icon: "bi-nut", code: "T18", detail: "Motor brushless de torque masivo industrial, chasis reforzado a prueba de impactos.", color: "text-amber-600", bgVector: "bg-amber-500/10 text-amber-600" },
-                { id: 4, title: "AMBI-LIGHT", spec: "SMART WIFI", price: "$169.99", icon: "bi-lightbulb", code: "L04", detail: "Sistema de iluminación unificado controlado por microprocesador de silicio de bajo consumo.", color: "text-slate-900", bgVector: "bg-slate-900/10 text-slate-900" }
+                { id: 4, title: "DRILL 18V", spec: "POWER TORQUE", price: "$249.99", icon: "bi-nut", code: "T18", detail: "Motor industrial brushless de torque continuo, chasis de policarbonato reforzado anti-caídas.", color: "text-amber-500", borderColor: "border-amber-500/40" },
+                { id: 5, title: "AMBI-LIGHT", spec: "SMART WIFI", price: "$169.99", icon: "bi-lightbulb", code: "L04", detail: "Lámpara domótica con matriz LED sintonizable y sincronización de audio de baja latencia.", color: "text-orange-400", borderColor: "border-orange-400/40" },
+                { id: 6, title: "ROUTER CNC", spec: "MICRO MILLING", price: "$450.00", icon: "bi-cpu", code: "C09", detail: "Fresadora de precisión milimétrica guiada por controlador integrado de estado sólido.", color: "text-slate-900", borderColor: "border-slate-900/40" }
             ];
 
             return (
                 <div class="w-full h-full flex flex-col relative bg-slate-950">
                     
-                    {/* HEADER FIJO */}
+                    {/* HEADER */}
                     <header class="h-16 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10 z-50">
                         <div class="flex items-center space-x-2">
                             <i class="bi bi-list text-xl text-white"></i>
@@ -117,23 +117,23 @@
                         <i class="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
 
-                    {/* INTERFAZ DUAL VERTICAL CON SILICIO Y SCROLL ISOLADO */}
+                    {/* GRILLA INTERFAZ DUAL */}
                     <main class="flex-1 w-full flex relative overflow-hidden">
                         
-                        {/* SECTOR IZQUIERDO: ALPHA SILICON */}
+                        {/* COLUMNA IZQUIERDA (ALPHA) */}
                         <div class="w-1/2 col-nave silicon-alpha px-2 py-4 border-r border-white/10">
                             <div class="mb-4 text-center border-b border-cyan-500/30 pb-2 sticky top-0 bg-[#060b19]/90 backdrop-blur-md z-20 rounded-b-lg">
                                 <h2 class="text-[10px] font-black font-space tracking-widest text-cyan-400">// SILICIO ALPHA</h2>
                             </div>
-                            <div class="space-y-4">
+                            <div class="space-y-4 pb-20">
                                 {productosAlpha.map(p => (
                                     <div 
                                         key={p.id} 
-                                        onClick={() => setSelectedProduct({ ...p, side: 'ALPHA' })}
+                                        onClick={() => setSelectedProduct(p)}
                                         class="card-alpha-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95"
                                     >
                                         <div class="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-950/60 border border-cyan-500/20">
-                                            <i class={`bi ${p.icon} text-3xl ${p.color} drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]`}></i>
+                                            <i class={`bi ${p.icon} text-3xl ${p.color}`}></i>
                                             <span class="absolute bottom-1 right-2 text-[8px] font-bold font-space text-cyan-500/30 tracking-widest">{p.code}</span>
                                         </div>
                                         <div class="mt-2">
@@ -149,16 +149,16 @@
                             </div>
                         </div>
 
-                        {/* SECTOR DERECHO: PRÁCTICA SILICON */}
+                        {/* COLUMNA DERECHA (PRÁCTICA) */}
                         <div class="w-1/2 col-nave silicon-practica px-2 py-4">
                             <div class="mb-4 text-center border-b border-slate-950/20 pb-2 sticky top-0 bg-[#eab308]/90 backdrop-blur-md z-20 rounded-b-lg">
                                 <h2 class="text-[10px] font-black font-space tracking-widest text-slate-950">// SILICIO PRÁCTICA</h2>
                             </div>
-                            <div class="space-y-4">
+                            <div class="space-y-4 pb-20">
                                 {productosPractica.map(p => (
                                     <div 
                                         key={p.id} 
-                                        onClick={() => setSelectedProduct({ ...p, side: 'PRACTICA' })}
+                                        onClick={() => setSelectedProduct(p)}
                                         class="card-practica-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95"
                                     >
                                         <div class="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-100 border border-slate-950/10">
@@ -178,80 +178,74 @@
                             </div>
                         </div>
 
-                        {/* CENTRAL EJE: ASTRO-GONMO (INYECTADO CON OPCION B BASE64) */}
+                        {/* ASTRO-GONMO CENTER (CON LA CONDICION BASE64 INYECTADA) */}
                         <div class="astro-center pointer-events-none">
                             <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-500 to-sky-600 border-2 border-slate-950 shadow-2xl flex items-center justify-center pointer-events-auto cursor-pointer overflow-hidden">
                                 <img 
-                                    /* OPCION B: INYECTADA DIRECTA. REEMPLAZA EL SRC CON TU BLOQUE COMPLETO EN BASE64 CUANDO LO TENGAS */
                                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" 
                                     alt="Astro" 
                                     class="w-full h-full object-cover hidden"
                                     onError={(e) => e.target.classList.add('hidden')} 
                                 />
-                                {/* Icono de respaldo si el Base64 está vacío o mal pegado */}
                                 <i class="bi bi-robot text-slate-950 text-base"></i>
                             </div>
                         </div>
 
                     </main>
 
-                    {/* PUSH-UP MODAL TRIDIMENSIONAL QUE ROMPE EL MOLDE */}
+                    {/* MODAL COMPLETAMENTE CENTRALIZADO Y OSCURO (COHERENCIA ALPHA) */}
                     {selectedProduct && (
-                        <div class="fixed inset-0 z-50 flex items-end justify-center px-4 pb-6 bg-slate-950/80 backdrop-blur-md">
-                            {/* Tap fuera para cerrar */}
+                        <div class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/85 backdrop-blur-lg">
+                            {/* Tap de fondo para salir */}
                             <div class="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
                             
-                            {/* Panel Push-Up */}
-                            <div class={`w-full max-w-sm rounded-3xl p-6 relative z-10 border-2 shadow-2xl animate-pushup ${
-                                selectedProduct.side === 'ALPHA' 
-                                    ? 'bg-[#0f172a] text-white border-cyan-500/40' 
-                                    : 'bg-white text-slate-950 border-slate-950'
-                            }`}>
+                            {/* Ventana de Impacto de Silicio Oscuro */}
+                            <div class={`w-full max-w-[320px] bg-gradient-to-b from-[#0f172a] to-[#020617] rounded-3xl p-5 relative z-10 border-2 text-white shadow-[0_20px_50px_rgba(0,0,0,0.8)] animate-quantum-center ${selectedProduct.borderColor}`}>
+                                
+                                {/* Botón de Cierre */}
                                 <button 
                                     onClick={() => setSelectedProduct(null)}
-                                    class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-500/10 flex items-center justify-center text-sm font-bold"
+                                    class="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs text-white/70 active:scale-90"
                                 >
                                     <i class="bi bi-x-lg"></i>
                                 </button>
 
-                                <div class="flex items-center space-x-4 mb-4">
-                                    <div class={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl ${selectedProduct.bgVector}`}>
-                                        <i class={`bi ${selectedProduct.icon}`}></i>
+                                {/* Icono y Título */}
+                                <div class="flex flex-col items-center text-center mt-2 mb-4">
+                                    <div class="w-16 h-16 rounded-2xl bg-slate-950/80 border border-white/5 flex items-center justify-center text-3xl mb-3 shadow-inner">
+                                        <i class={`bi ${selectedProduct.icon} ${selectedProduct.color}`}></i>
                                     </div>
-                                    <div>
-                                        <span class="text-[9px] font-black font-space tracking-widest opacity-60 bg-current/10 px-2 py-0.5 rounded uppercase">
-                                            CÓDIGO // {selectedProduct.code}
-                                        </span>
-                                        <h2 class="text-xl font-black font-space tracking-tight leading-none mt-1">{selectedProduct.title}</h2>
-                                        <p class={`text-xs font-bold uppercase tracking-wider mt-0.5 ${selectedProduct.side === 'ALPHA' ? 'text-cyan-400' : 'text-amber-600'}`}>
-                                            {selectedProduct.spec}
-                                        </p>
-                                    </div>
+                                    <span class="text-[9px] font-black font-space tracking-widest text-white/40 uppercase bg-white/5 px-2.5 py-0.5 rounded-full">
+                                        MÓDULO // {selectedProduct.code}
+                                    </span>
+                                    <h2 class="text-lg font-black font-space tracking-tight mt-2 uppercase">{selectedProduct.title}</h2>
+                                    <p class={`text-[10px] font-bold tracking-widest uppercase mt-0.5 ${selectedProduct.color}`}>
+                                        {selectedProduct.spec}
+                                    </p>
                                 </div>
 
-                                <p class="text-sm leading-relaxed opacity-80 mb-6">
+                                {/* Descripción de Alta Tecnología */}
+                                <p class="text-xs text-slate-300 leading-relaxed text-center px-2 mb-5">
                                     {selectedProduct.detail}
                                 </p>
 
-                                <div class="flex items-center justify-between border-t pt-4 border-current/10">
-                                    <div class="flex flex-col">
-                                        <span class="text-[9px] font-bold uppercase opacity-50 font-space">PRECIO NETO</span>
-                                        <span class="text-2xl font-black font-space tracking-tight">{selectedProduct.price}</span>
+                                {/* Contenedor de Precio y Compra */}
+                                <div class="border-t border-white/10 pt-4 flex flex-col space-y-3">
+                                    <div class="flex justify-between items-center px-1">
+                                        <span class="text-[9px] font-bold font-space text-white/40 uppercase">VALOR ESTRUCTURA</span>
+                                        <span class="text-xl font-black font-space text-white tracking-tight">{selectedProduct.price}</span>
                                     </div>
-                                    <button class={`px-6 h-12 rounded-xl font-space font-black text-sm tracking-wider flex items-center space-x-2 shadow-lg ${
-                                        selectedProduct.side === 'ALPHA'
-                                            ? 'bg-cyan-400 text-slate-950'
-                                            : 'bg-slate-950 text-white'
-                                    }`}>
+                                    <button class="w-full h-11 rounded-xl bg-cyan-400 text-slate-950 font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 shadow-[0_4px_12px_rgba(34,211,238,0.3)] active:scale-95 transition-transform">
                                         <i class="bi bi-lightning-charge-fill"></i>
-                                        <span>INJECTAR COMPRA</span>
+                                        <span>INJECTAR EN NAVE</span>
                                     </button>
                                 </div>
+
                             </div>
                         </div>
                     )}
 
-                    {/* BARRA COMERCIAL INFERIOR FIJA */}
+                    {/* BARRA INFERIOR */}
                     <nav class="h-16 w-full bg-slate-950 border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
                         <div class="flex flex-col items-center text-cyan-400">
                             <i class="bi bi-grid-1x2-fill text-base"></i>
