@@ -2,224 +2,161 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GONMO NAVE — NEXO ARQUETIPO V1.5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GONMO NAVE — DIVISION VERTICAL V2.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&family=Space+Grotesk:wght@700&display=swap');
         
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0b132b;
+        body, html {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b132b;
         }
         .font-space { font-family: 'Space Grotesk', sans-serif; }
-        
-        .scroller-content {
-            padding-top: 64px;
-            padding-bottom: 80px;
+
+        /* Contenedores fijos para forzar el 50/50 vertical en mobile */
+        .col-nave {
+            height: calc(100vh - 128px); /* Descuenta header y footer fijos */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Renderizado e impacto de imágenes flotantes estilo Matriz Norte */
-        .product-img {
-            max-height: 110px;
-            object-fit: contain;
-            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.3));
-            transition: transform 0.3s ease;
+        /* Ocultar barra de scroll para estética premium */
+        .col-nave::-webkit-scrollbar {
+            display: none;
         }
-        .product-img:hover {
-            transform: scale(1.08);
+
+        /* Ajuste fino de imágenes reales */
+        .img-premium {
+            max-height: 75px;
+            object-fit: contain;
+            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.3));
+        }
+
+        /* Astro-Gonmo flotando en el eje central exacto */
+        .astro-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 40;
         }
     </style>
 </head>
-<body class="antialiased text-white selection:bg-cyan-500 selection:text-slate-950">
-    <div id="root"></div>
+<body class="antialiased select-none text-white">
+    <div id="root" class="w-full h-full"></div>
 
     <script type="text/babel">
-        function GonmoNaveApp() {
-            // Inyección mandatoria de imágenes reales transparentes de alta calidad comercial
-            const secciones = [
-                {
-                    id: "ALPHA",
-                    titulo: "// ZONA ALPHA",
-                    subtitulo: "HARDWARE & GAMING COMPONENTES",
-                    bgClase: "bg-[#0b132b] text-white",
-                    cardClase: "bg-[#111c3a]/90 border-white/5 text-white",
-                    accentText: "text-cyan-400",
-                    btnClase: "bg-white text-slate-950 hover:bg-cyan-400",
-                    productos: [
-                        { 
-                            id: 1, 
-                            title: "NIGHTHAWK 18K", 
-                            spec: "PRD-OPTIC SENSOR", 
-                            detail: "Resolución de 18K DPI nativos con switches ópticos de respuesta inmediata.", 
-                            price: "$189.99", 
-                            imgUrl: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=300&q=80", // Mouse Gamer Premium Limpio
-                            code: "M01" 
-                        },
-                        { 
-                            id: 2, 
-                            title: "ASUS ROG TITAN", 
-                            spec: "12GB GDDR6 VRAM", 
-                            detail: "Arquitectura Ampere de última generación con soporte Ray Tracing y DLSS activo.", 
-                            price: "$1,299.99", 
-                            imgUrl: "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=300&q=80", // Placa de Video Premium Coincidente
-                            code: "G12" 
-                        }
-                    ]
-                },
-                {
-                    id: "PRACTICA",
-                    titulo: "// ZONA PRÁCTICA",
-                    subtitulo: "HERRAMIENTAS & HOGAR UTILITARIO",
-                    bgClase: "bg-[#F4D03F] text-slate-950",
-                    cardClase: "bg-white border-slate-200 text-slate-950 shadow-lg",
-                    accentText: "text-amber-600",
-                    btnClase: "bg-slate-950 text-white hover:bg-amber-500 hover:text-slate-950",
-                    productos: [
-                        { 
-                            id: 3, 
-                            title: "POWER-DRILL 18V", 
-                            spec: "TEOMKL 33SO H3", 
-                            detail: "Taladro percutor inalámbrico con motor industrial de torque masivo de alta resistencia.", 
-                            price: "$249.99", 
-                            imgUrl: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=300&q=80", // Taladro Percutor Naranja Profesional Coincidente
-                            code: "T18", 
-                            tag: "PRO" 
-                        },
-                        { 
-                            id: 4, 
-                            title: "PHILIPS AMBI-LIGHT", 
-                            spec: "🌐 SMART WIFI CONTROL", 
-                            detail: "Iluminación ambiental inteligente con presets automatizados y control por app.", 
-                            price: "$169.99", 
-                            imgUrl: "https://images.unsplash.com/photo-1565814636199-ae8133055c1c?auto=format&fit=crop&w=300&q=80", // Lámpara de Diseño Cilindro Coincidente
-                            code: "L04", 
-                            tag: "WIFI" 
-                        }
-                    ]
-                }
+        function GonmoNaveSplit() {
+            const productosAlpha = [
+                { id: 1, title: "NIGHTHAWK", spec: "18K DPI", price: "$189.99", img: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=200&q=80", code: "M01" },
+                { id: 2, title: "TITAN RDX", spec: "12GB VRAM", price: "$1,299", img: "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=200&q=80", code: "G12" }
+            ];
+
+            const productosPractica = [
+                { id: 3, title: "DRILL 18V", spec: "INDUSTRIAL", price: "$249.99", img: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=200&q=80", code: "T18" },
+                { id: 4, title: "AMBI-LIGHT", spec: "SMART WIFI", price: "$169.99", img: "https://images.unsplash.com/photo-1565814636199-ae8133055c1c?auto=format&fit=crop&w=200&q=80", code: "L04" }
             ];
 
             return (
-                <div class="w-screen min-h-screen flex flex-col relative overflow-x-hidden">
+                <div class="w-full h-full flex flex-col relative bg-slate-950">
                     
-                    {/* HEADER PREMIUM CON BLUR REAL */}
-                    <header class="fixed top-0 inset-x-0 h-16 flex items-center justify-between px-6 bg-slate-950/80 backdrop-blur-md border-b border-white/10 z-50">
-                        <div class="flex items-center space-x-3">
-                            <i class="bi bi-list text-xl opacity-80 text-white"></i>
-                            <span class="text-base font-bold tracking-tight font-space uppercase text-white">GONMO NAVE</span>
+                    {/* HEADER FIJO */}
+                    <header class="h-16 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10 z-50">
+                        <div class="flex items-center space-x-2">
+                            <i class="bi bi-list text-xl"></i>
+                            <span class="text-sm font-bold tracking-tight font-space text-white">GONMO NAVE</span>
                         </div>
-                        <div class="flex items-center space-x-5 text-lg text-white opacity-90">
-                            <i class="bi bi-search"></i>
-                            <div class="relative">
-                                <i class="bi bi-cart3"></i>
-                                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white font-bold text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-space">3</span>
-                            </div>
-                        </div>
+                        <i class="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
 
-                    {/* FLUJO VERTICAL CONTINUO SIN PESTAÑAS HORIZONTALES */}
-                    <div class="scroller-content w-full flex flex-col">
-                        {secciones.map((sec) => (
-                            <section key={sec.id} class={`w-full py-10 px-5 transition-colors duration-300 ${sec.bgClase}`}>
-                                <div class="max-w-md mx-auto w-full">
-                                    
-                                    {/* IDENTIFICACIÓN DE LA ZONA NODRIZA */}
-                                    <div class="mb-6 border-b border-current/10 pb-2">
-                                        <h2 class="text-xl font-black font-space tracking-wider uppercase leading-none">{sec.titulo}</h2>
-                                        <p class="text-[10px] font-bold tracking-widest uppercase opacity-70 mt-1">{sec.subtitulo}</p>
-                                    </div>
-
-                                    {/* CONTENEDOR DE TARJETAS DE ALTO RENDIMIENTO */}
-                                    <div class="space-y-6">
-                                        {sec.productos.map((item) => (
-                                            <div key={item.id} class={`rounded-2xl p-5 flex items-center justify-between border transition-all ${sec.cardClase}`}>
-                                                
-                                                {/* DATA COMERCIAL */}
-                                                <div class="w-[58%] flex flex-col justify-between min-h-[120px]">
-                                                    <div>
-                                                        <div class="flex items-center space-x-2 mb-1">
-                                                            <h3 class="text-base font-extrabold tracking-tight leading-tight">{item.title}</h3>
-                                                            {item.tag && (
-                                                                <span class="bg-amber-500/20 text-amber-950 text-[8px] font-black px-1.5 py-0.5 rounded border border-amber-500/30 font-space">
-                                                                    {item.tag}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                        <p class={`text-[9px] font-bold tracking-wider uppercase ${sec.accentText}`}>
-                                                            {item.spec}
-                                                        </p>
-                                                        <p class="text-xs mt-2 leading-relaxed opacity-85">
-                                                            {item.detail}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div class="mt-4 flex items-center justify-between">
-                                                        <span class="text-base font-black font-space tracking-tight">
-                                                            {item.price}
-                                                        </span>
-                                                        <button class={`w-9 h-9 rounded-full flex items-center justify-center shadow-md active:scale-95 transition-transform ${sec.btnClase}`}>
-                                                            <i class="bi bi-lightning-charge-fill text-xs"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                {/* EXPOSICIÓN DE IMAGEN REAL (PROTAGONISTA ABSOLUTO) */}
-                                                <div class="w-[38%] h-32 rounded-xl flex items-center justify-center relative bg-slate-500/5 overflow-hidden border border-current/5 p-2">
-                                                    <img 
-                                                        src={item.imgUrl} 
-                                                        alt={item.title} 
-                                                        class="product-img"
-                                                        loading="lazy"
-                                                    />
-                                                    <span class="absolute bottom-1 right-2 text-[8px] font-bold font-space opacity-30">
-                                                        {item.code}
-                                                    </span>
-                                                </div>
-
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                </div>
-                            </section>
-                        ))}
-                    </div>
-
-                    {/* ASISTENTE HOLOGRÁFICO PREMIUM CONTROLADO EN ESQUINA */}
-                    <div class="fixed bottom-20 right-4 flex items-center space-x-2 z-40 pointer-events-none">
-                        <div class="bg-slate-950/95 backdrop-blur-md border border-white/10 text-white rounded-xl px-3 py-1.5 text-[10px] max-w-[150px] shadow-2xl pointer-events-auto">
-                            <p class="font-bold text-cyan-400 text-[8px] font-space tracking-widest uppercase mb-0.5">ASTRO // CONECTADO</p>
-                            <p class="text-slate-300 leading-tight">Imágenes reales inyectadas. Revisá el feed, Fabián.</p>
-                        </div>
+                    {/* ESTRUCTURA DUAL VERTICAL (IZQUIERDA Y DERECHA COEXISTENTES) */}
+                    <main class="flex-1 w-full flex relative">
                         
-                        {/* Esfera Tecnológica con Brillo Real */}
-                        <div class="w-12 h-12 rounded-full relative pointer-events-auto shadow-2xl bg-gradient-to-tr from-cyan-600 via-sky-400 to-white border border-white/30 animate-pulse">
-                            <div class="absolute inset-1.5 rounded-full bg-slate-950/50 backdrop-blur-xs flex items-center justify-center">
-                                <i class="bi bi-robot text-cyan-400 text-base shadow-glow"></i>
+                        {/* COLUMNA IZQUIERDA: ZONA ALPHA */}
+                        <div class="w-1/2 col-nave bg-[#0b132b] px-2 py-4 border-r border-white/5">
+                            <div class="mb-4 text-center border-b border-cyan-500/20 pb-1">
+                                <h2 class="text-xs font-black font-space tracking-wider text-cyan-400">// ZONA ALPHA</h2>
+                            </div>
+                            <div class="space-y-3">
+                                {productosAlpha.map(p => (
+                                    <div key={p.id} class="bg-[#111c3a] border border-white/5 rounded-xl p-3 flex flex-col justify-between min-h-[175px] shadow-md">
+                                        <div class="text-center bg-slate-950/20 rounded-lg py-2 flex items-center justify-center min-h-[85px]">
+                                            <img src={p.img} alt={p.title} class="img-premium" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xs font-black tracking-tight leading-none text-white truncate">{p.title}</h3>
+                                            <p class="text-[8px] font-bold text-cyan-400 tracking-wide mt-0.5">{p.spec}</p>
+                                        </div>
+                                        <div class="flex items-center justify-between mt-2">
+                                            <span class="text-xs font-black font-space text-white">{p.price}</span>
+                                            <button class="w-6 h-6 rounded-full bg-white text-slate-950 flex items-center justify-center text-[10px]">
+                                                <i class="bi bi-lightning-charge-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                    </div>
+
+                        {/* COLUMNA DERECHA: ZONA PRÁCTICA */}
+                        <div class="w-1/2 col-nave bg-[#F4D03F] px-2 py-4">
+                            <div class="mb-4 text-center border-b border-slate-950/10 pb-1">
+                                <h2 class="text-xs font-black font-space tracking-wider text-slate-950">// ZONA PRÁCTICA</h2>
+                            </div>
+                            <div class="space-y-3">
+                                {productosPractica.map(p => (
+                                    <div key={p.id} class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between min-h-[175px] shadow-md">
+                                        <div class="text-center bg-slate-100 rounded-lg py-2 flex items-center justify-center min-h-[85px]">
+                                            <img src={p.img} alt={p.title} class="img-premium" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xs font-black tracking-tight leading-none text-slate-950 truncate">{p.title}</h3>
+                                            <p class="text-[8px] font-bold text-amber-600 tracking-wide mt-0.5">{p.spec}</p>
+                                        </div>
+                                        <div class="flex items-center justify-between mt-2">
+                                            <span class="text-xs font-black font-space text-slate-950">{p.price}</span>
+                                            <button class="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center text-[10px]">
+                                                <i class="bi bi-lightning-charge-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* ASTRO-GONMO FLOTANDO FIJO EN EL CENTRO EXACTO */}
+                        <div class="astro-center pointer-events-none flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-600 via-sky-400 to-white border-2 border-slate-950 shadow-2xl flex items-center justify-center pointer-events-auto cursor-pointer">
+                                <i class="bi bi-robot text-slate-950 text-sm"></i>
+                            </div>
+                        </div>
+
+                    </main>
 
                     {/* BARRA COMERCIAL INFERIOR FIJA */}
-                    <nav class="fixed bottom-0 inset-x-0 h-16 bg-slate-950/95 backdrop-blur-md border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
+                    <nav class="h-16 w-full bg-slate-950 border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
                         <div class="flex flex-col items-center text-cyan-400">
-                            <i class="bi bi-grid-1x2-fill text-lg"></i>
+                            <i class="bi bi-grid-1x2-fill text-base"></i>
                             <span class="text-[8px] font-bold tracking-wider mt-0.5 font-space">NAVE</span>
                         </div>
-                        <div class="flex flex-col items-center hover:text-white transition-colors">
-                            <i class="bi bi-person text-lg"></i>
+                        <div class="flex flex-col items-center">
+                            <i class="bi bi-person text-base"></i>
                             <span class="text-[8px] font-medium tracking-wider mt-0.5">PERFIL</span>
                         </div>
-                        <div class="flex flex-col items-center hover:text-white transition-colors">
-                            <i class="bi bi-bell text-lg"></i>
-                            <span class="text-[8px] font-medium tracking-wider mt-0.5">NOTIFICACIONES</span>
+                        <div class="flex flex-col items-center relative">
+                            <i class="bi bi-bell text-base"></i>
+                            <span class="text-[8px] font-medium tracking-wider mt-0.5">AVISOS</span>
+                            <span class="absolute top-0 right-3 bg-red-500 w-1.5 h-1.5 rounded-full"></span>
                         </div>
                     </nav>
 
@@ -228,7 +165,7 @@
         }
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<GonmoNaveApp />);
+        root.render(<GonmoNaveSplit />);
     </script>
 </body>
 </html>
