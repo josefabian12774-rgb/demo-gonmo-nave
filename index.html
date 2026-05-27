@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE — FINAL FIXED</title>
+    <title>GONMO NAVE — MAQUINA V4.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -23,6 +23,7 @@
         }
         .font-space { font-family: 'Space Grotesk', sans-serif; }
 
+        /* SCROLL INDEPENDIENTE AISLADO */
         .col-nave {
             height: calc(100vh - 128px);
             overflow-y: scroll;
@@ -32,6 +33,7 @@
         }
         .col-nave::-webkit-scrollbar { display: none; }
 
+        /* Sectores con transiciones dinámicas */
         .silicon-alpha {
             background-color: #060b19;
             background-image: 
@@ -60,6 +62,7 @@
             box-shadow: 4px 4px 0px #0f172a, 0 8px 16px rgba(0,0,0,0.15);
         }
 
+        /* CONTENEDOR CENTRAL DEL VIDEO HOLOGRAMA CON REACCIÓN VISUAL */
         .astro-center {
             position: absolute;
             top: 50%;
@@ -69,19 +72,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            width: 110px;
-            height: 145px;
-            pointer-events: none;
+            transition: all 0.3s ease;
         }
-        
-        .hologram-robot-box {
-            width: 100%;
-            height: 100%;
+        .hologram-video-box {
+            width: 130px;
+            height: 165px;
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.7));
+            transition: filter 0.3s ease;
         }
 
         @keyframes pushUpQuantum {
@@ -99,6 +100,9 @@
     <script type="text/babel">
         function GonmoNaveSplit() {
             const [selectedProduct, setSelectedProduct] = React.useState(null);
+            const [activeZone, setActiveZone] = React.useState('NEUTRAL');
+            // Inicializamos el carrito dinámico en 0
+            const [cartCount, setCartCount] = React.useState(0);
 
             const productosAlpha = [
                 { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada. Latencia cero absoluta.", color: "text-cyan-400", side: "ALPHA" },
@@ -112,135 +116,176 @@
                 { id: 6, title: "ROUTER CNC", spec: "MICRO MILLING", price: "$450.00", icon: "bi-cpu", code: "C09", detail: "Fresadora de precisión milimétrica guiada por controlador integrado de estado sólido.", color: "text-amber-600", side: "PRACTICA" }
             ];
 
+            // Función para inyectar producto al carrito de forma real
+            const injectProduct = (product) => {
+                setCartCount(prev => prev + 1);
+                setSelectedProduct(null);
+            };
+
+            // Determinar el filtro de sombra del holograma según la zona activa
+            const getHologramFilter = () => {
+                if (activeZone === 'ALPHA') return 'drop-shadow(0 0 20px rgba(6, 182, 212, 0.9)) scale(1.05)';
+                if (activeZone === 'PRACTICA') return 'drop-shadow(0 0 20px rgba(234, 179, 8, 0.9)) scale(1.05)';
+                return 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.5))';
+            };
+
             return (
-                <div className="w-full h-full flex flex-col relative bg-slate-950">
+                <div class="w-full h-full flex flex-col relative bg-slate-950">
                     
-                    <header className="h-16 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10 z-50">
-                        <div className="flex items-center space-x-2">
-                            <i className="bi bi-list text-xl text-white"></i>
-                            <span className="text-sm font-bold tracking-tight font-space text-white uppercase">GONMO NAVE</span>
+                    {/* HEADER */}
+                    <header class="h-16 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10 z-50">
+                        <div class="flex items-center space-x-2">
+                            <i class="bi bi-list text-xl text-white"></i>
+                            <span class="text-sm font-bold tracking-tight font-space text-white uppercase">GONMO NAVE</span>
                         </div>
-                        <i className="bi bi-search text-lg text-white opacity-80"></i>
+                        <div class="text-[10px] font-space font-bold tracking-widest text-white/40">
+                            ZONA: <span class={activeZone === 'ALPHA' ? 'text-cyan-400' : activeZone === 'PRACTICA' ? 'text-amber-400' : 'text-white/40'}>{activeZone}</span>
+                        </div>
+                        <i class="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
 
-                    <main className="flex-1 w-full flex relative overflow-hidden">
+                    {/* INTERFAZ DUAL COEXISTENTE */}
+                    <main class="flex-1 w-full flex relative overflow-hidden">
                         
-                        <div className="w-1/2 col-nave silicon-alpha px-2 py-4 border-r border-white/10">
-                            <div className="mb-4 text-center border-b border-cyan-500/30 pb-2 sticky top-0 bg-[#060b19]/90 backdrop-blur-md z-20 rounded-b-lg">
-                                <h2 className="text-[10px] font-black font-space tracking-widest text-cyan-400 leading-none uppercase">// SILICIO ALPHA</h2>
+                        {/* ZONA ALPHA */}
+                        <div 
+                            className="w-1/2 col-nave silicon-alpha px-2 py-4 border-r border-white/10"
+                            onMouseEnter={() => setActiveZone('ALPHA')}
+                            onTouchStart={() => setActiveZone('ALPHA')}
+                        >
+                            <div class="mb-4 text-center border-b border-cyan-500/30 pb-2 sticky top-0 bg-[#060b19]/90 backdrop-blur-md z-20 rounded-b-lg">
+                                <h2 class="text-[10px] font-black font-space tracking-widest text-cyan-400 leading-none uppercase">// SILICIO ALPHA</h2>
                             </div>
-                            <div className="space-y-4 pb-24">
+                            <div class="space-y-4 pb-24">
                                 {productosAlpha.map(p => (
                                     <div 
                                         key={p.id} 
-                                        onClick={() => setSelectedProduct(p)}
-                                        className="card-alpha-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95"
+                                        onClick={() => { setSelectedProduct(p); setActiveZone('ALPHA'); }}
+                                        class="card-alpha-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95 hover:border-cyan-400/50"
                                     >
-                                        <div className="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-950/60 border border-cyan-500/20">
-                                            <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
-                                            <span className="absolute bottom-1 right-2 text-[8px] font-bold font-space text-cyan-500/30 tracking-widest">{p.code}</span>
+                                        <div class="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-950/60 border border-cyan-500/20">
+                                            <i class={`bi ${p.icon} text-3xl ${p.color}`}></i>
+                                            <span class="absolute bottom-1 right-2 text-[8px] font-bold font-space text-cyan-500/30 tracking-widest">{p.code}</span>
                                         </div>
-                                        <div className="mt-2">
-                                            <h3 className="text-xs font-black tracking-tight text-white uppercase truncate">{p.title}</h3>
-                                            <p className="text-[8px] font-bold text-cyan-400/80 tracking-wider uppercase mt-0.5">{p.spec}</p>
+                                        <div class="mt-2">
+                                            <h3 class="text-xs font-black tracking-tight text-white uppercase truncate">{p.title}</h3>
+                                            <p class="text-[8px] font-bold text-cyan-400/80 tracking-wider uppercase mt-0.5">{p.spec}</p>
                                         </div>
-                                        <div className="flex items-center justify-between mt-2 pt-1 border-t border-white/5">
-                                            <span className="text-xs font-black font-space text-white">{p.price}</span>
-                                            <span className="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-[10px] shadow-lg"><i className="bi bi-eye-fill"></i></span>
+                                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-white/5">
+                                            <span class="text-xs font-black font-space text-white">{p.price}</span>
+                                            <span class="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-[10px] shadow-lg"><i class="bi bi-eye-fill"></i></span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <div className="w-1/2 col-nave silicon-practica px-2 py-4">
-                            <div className="mb-4 text-center border-b border-slate-950/20 pb-2 sticky top-0 bg-[#eab308]/90 backdrop-blur-md z-20 rounded-b-lg">
-                                <h2 className="text-[10px] font-black font-space tracking-widest text-slate-950 leading-none uppercase">// SILICIO PRÁCTICA</h2>
+                        {/* ZONA PRÁCTICA */}
+                        <div 
+                            className="w-1/2 col-nave silicon-practica px-2 py-4"
+                            onMouseEnter={() => setActiveZone('PRACTICA')}
+                            onTouchStart={() => setActiveZone('PRACTICA')}
+                        >
+                            <div class="mb-4 text-center border-b border-slate-950/20 pb-2 sticky top-0 bg-[#eab308]/90 backdrop-blur-md z-20 rounded-b-lg">
+                                <h2 class="text-[10px] font-black font-space tracking-widest text-slate-950 leading-none uppercase">// SILICIO PRÁCTICA</h2>
                             </div>
-                            <div className="space-y-4 pb-24">
+                            <div class="space-y-4 pb-24">
                                 {productosPractica.map(p => (
                                     <div 
                                         key={p.id} 
-                                        onClick={() => setSelectedProduct(p)}
-                                        className="card-practica-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95"
+                                        onClick={() => { setSelectedProduct(p); setActiveZone('PRACTICA'); }}
+                                        class="card-practica-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95 hover:border-slate-950/40"
                                     >
-                                        <div className="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-100 border border-slate-950/10">
-                                            <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
-                                            <span className="absolute bottom-1 right-2 text-[8px] font-bold font-space text-slate-950/20 tracking-widest">{p.code}</span>
+                                        <div class="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-100 border border-slate-950/10">
+                                            <i class={`bi ${p.icon} text-3xl ${p.color}`}></i>
+                                            <span class="absolute bottom-1 right-2 text-[8px] font-bold font-space text-slate-950/20 tracking-widest">{p.code}</span>
                                         </div>
-                                        <div className="mt-2">
-                                            <h3 className="text-xs font-black tracking-tight text-slate-950 uppercase truncate">{p.title}</h3>
-                                            <p className="text-[8px] font-bold text-amber-800 tracking-wider uppercase mt-0.5">{p.spec}</p>
+                                        <div class="mt-2">
+                                            <h3 class="text-xs font-black tracking-tight text-slate-950 uppercase truncate">{p.title}</h3>
+                                            <p class="text-[8px] font-bold text-amber-800 tracking-wider uppercase mt-0.5">{p.spec}</p>
                                         </div>
-                                        <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-200">
-                                            <span className="text-xs font-black font-space text-slate-950">{p.price}</span>
-                                            <span className="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center text-[10px] shadow-md"><i className="bi bi-eye-fill"></i></span>
+                                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-slate-200">
+                                            <span class="text-xs font-black font-space text-slate-950">{p.price}</span>
+                                            <span class="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center text-[10px] shadow-md"><i class="bi bi-eye-fill"></i></span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <div className="astro-center">
-                            <div className="hologram-robot-box">
-                                <img 
-                                    src="./robot.gif" 
-                                    className="w-full h-full object-contain block select-none"
-                                    alt="Astro"
-                                />
+                        {/* REPRODUCTOR HOLOGRAMA DINÁMICO */}
+                        <div class="astro-center pointer-events-none" style={{ transform: `translate(-50%, -50%)` }}>
+                            <div class="hologram-video-box" style={{ filter: getHologramFilter() }}>
+                                <video 
+                                    src="https://cdn.jsdelivr.net/gh/n12774-rgb/n12774-rgb.github.io/robot.mp4" 
+                                    autoplay 
+                                    loop 
+                                    muted 
+                                    playsinline
+                                    webkit-playsinline="true"
+                                    class="w-full h-full object-contain block"
+                                >
+                                    Tu navegador no soporta video.
+                                </video>
                             </div>
-                            <div className="w-12 h-0.5 bg-cyan-400/30 blur-[2px] rounded-full mt-1 shadow-[0_0_8px_#22d3ee]"></div>
+                            <div class={`w-16 h-1 blur-[2px] rounded-full mt-1.5 transition-all duration-300 ${
+                                activeZone === 'ALPHA' ? 'bg-cyan-400 shadow-[0_0_12px_#22d3ee]' : activeZone === 'PRACTICA' ? 'bg-amber-500 shadow-[0_0_12px_#f59e0b]' : 'bg-cyan-400/30 shadow-[0_0_10px_#22d3ee]'
+                            }`}></div>
                         </div>
 
                     </main>
 
+                    {/* MODAL PUSH-UP QUANTUM CON ACCIÓN REAL */}
                     {selectedProduct && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/90 backdrop-blur-md">
-                            <div className="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
+                        <div class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/90 backdrop-blur-md">
+                            <div class="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
                             
-                            <div className={`w-full max-w-[310px] bg-gradient-to-b from-[#0b0f19] to-[#03050a] rounded-3xl p-5 relative z-10 border-2 text-white shadow-[0_25px_60px_rgba(0,0,0,0.9)] animate-quantum ${
+                            <div class={`w-full max-w-[310px] bg-gradient-to-b from-[#0b0f19] to-[#03050a] rounded-3xl p-5 relative z-10 border-2 text-white shadow-[0_25px_60px_rgba(0,0,0,0.9)] animate-quantum ${
                                 selectedProduct.side === 'ALPHA' ? 'border-cyan-500/50' : 'border-amber-500/60'
                             }`}>
                                 
                                 <button 
                                     onClick={() => setSelectedProduct(null)}
-                                    className="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs text-white/60 active:scale-90"
+                                    class="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs text-white/60 active:scale-90"
                                 >
-                                    <i className="bi bi-x-lg"></i>
+                                    <i class="bi bi-x-lg"></i>
                                 </button>
 
-                                <div className={`w-full h-28 rounded-2xl flex items-center justify-center border mb-4 relative overflow-hidden bg-slate-950/60 ${
+                                <div class={`w-full h-28 rounded-2xl flex items-center justify-center border mb-4 relative overflow-hidden bg-slate-950/60 ${
                                     selectedProduct.side === 'ALPHA' ? 'border-cyan-500/20 shadow-[inset_0_0_15px_rgba(6,182,212,0.1)]' : 'border-amber-500/20 shadow-[inset_0_0_15px_rgba(234,179,8,0.1)]'
                                 }`}>
-                                    <i className={`bi ${selectedProduct.icon} text-4xl ${selectedProduct.color} drop-shadow-[0_0_10px_currentColor]`}></i>
-                                    <span className="absolute bottom-2 right-3 text-[9px] font-bold font-space opacity-30 tracking-widest">{selectedProduct.code}</span>
+                                    <i class={`bi ${selectedProduct.icon} text-4xl ${selectedProduct.color} drop-shadow-[0_0_10px_currentColor]`}></i>
+                                    <span class="absolute bottom-2 right-3 text-[9px] font-bold font-space opacity-30 tracking-widest">{selectedProduct.code}</span>
                                 </div>
 
-                                <div className="text-center mb-4">
-                                    <h2 className="text-lg font-black font-space tracking-tight uppercase leading-none">{selectedProduct.title}</h2>
-                                    <p className={`text-[9px] font-bold tracking-widest uppercase mt-1 ${
+                                <div class="text-center mb-4">
+                                    <h2 class="text-lg font-black font-space tracking-tight uppercase leading-none">{selectedProduct.title}</h2>
+                                    <p class={`text-[9px] font-bold tracking-widest uppercase mt-1 ${
                                         selectedProduct.side === 'ALPHA' ? 'text-cyan-400' : 'text-amber-500'
                                     }`}>
                                         {selectedProduct.spec}
                                     </p>
                                 </div>
 
-                                <p className="text-[11px] text-slate-400 leading-relaxed text-center px-1 mb-4">
+                                <p class="text-[11px] text-slate-400 leading-relaxed text-center px-1 mb-4">
                                     {selectedProduct.detail}
                                 </p>
 
-                                <div className="border-t border-white/10 pt-3 flex flex-col space-y-2">
-                                    <div className="flex justify-between items-center px-1">
-                                        <span className="text-[8px] font-bold font-space text-white/30 uppercase">VALOR NAVE</span>
-                                        <span className="text-xl font-black font-space text-white tracking-tight">{selectedProduct.price}</span>
+                                <div class="border-t border-white/10 pt-3 flex flex-col space-y-2">
+                                    <div class="flex justify-between items-center px-1">
+                                        <span class="text-[8px] font-bold font-space text-white/30 uppercase">VALOR NAVE</span>
+                                        <span class="text-xl font-black font-space text-white tracking-tight">{selectedProduct.price}</span>
                                     </div>
                                     
-                                    <button className={`w-full h-11 rounded-xl font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-95 ${
-                                        selectedProduct.side === 'ALPHA'
-                                            ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_15px_rgba(34,211,238,0.3)]'
-                                            : 'bg-amber-500 text-slate-950 shadow-[0_4px_15px_rgba(234,179,8,0.3)]'
-                                    }`}>
-                                        <i className="bi bi-lightning-charge-fill"></i>
+                                    <button 
+                                        onClick={() => injectProduct(selectedProduct)}
+                                        class={`w-full h-11 rounded-xl font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-95 ${
+                                            selectedProduct.side === 'ALPHA'
+                                                ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_15px_rgba(34,211,238,0.3)]'
+                                                : 'bg-amber-500 text-slate-950 shadow-[0_4px_15px_rgba(234,179,8,0.3)]'
+                                        }`}
+                                    >
+                                        <i class="bi bi-lightning-charge-fill"></i>
                                         <span>INYECTAR EN NAVE</span>
                                     </button>
                                 </div>
@@ -249,20 +294,25 @@
                         </div>
                     )}
 
-                    <nav className="h-16 w-full bg-slate-950 border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
-                        <div className="flex flex-col items-center text-cyan-400 relative cursor-pointer">
-                            <i className="bi bi-cart3 text-lg"></i>
-                            <span className="text-[8px] font-bold tracking-wider mt-0.5 font-space">CARRITO</span>
-                            <span className="absolute top-0 right-3 bg-red-500 text-white font-bold text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-space">3</span>
+                    {/* BARRA INFERIOR COMERCIAL CON CONTEO ACTIVO */}
+                    <nav class="h-16 w-full bg-slate-950 border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
+                        <div class="flex flex-col items-center text-cyan-400 relative cursor-pointer" onClick={() => activeZone !== 'NEUTRAL' && alert(`Inyecciones en cola: ${cartCount}`)}>
+                            <i class="bi bi-cart3 text-lg"></i>
+                            <span class="text-[8px] font-bold tracking-wider mt-0.5 font-space">CARRITO</span>
+                            {cartCount > 0 && (
+                                <span class="absolute top-0 right-3 bg-red-500 text-white font-bold text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-space animate-bounce">
+                                    {cartCount}
+                                </span>
+                            )}
                         </div>
-                        <div className="flex flex-col items-center hover:text-white transition-colors cursor-pointer">
-                            <i className="bi bi-person text-lg"></i>
-                            <span className="text-[8px] font-medium tracking-wider mt-0.5 uppercase">PERFIL</span>
+                        <div class="flex flex-col items-center hover:text-white transition-colors cursor-pointer">
+                            <i class="bi bi-person text-lg"></i>
+                            <span class="text-[8px] font-medium tracking-wider mt-0.5 uppercase">PERFIL</span>
                         </div>
-                        <div className="flex flex-col items-center hover:text-white transition-colors relative cursor-pointer">
-                            <i className="bi bi-bell text-lg"></i>
-                            <span className="text-[8px] font-medium tracking-wider mt-0.5 uppercase">NOTIFICACIONES</span>
-                            <span className="absolute top-1 right-5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                        <div class="flex flex-col items-center hover:text-white transition-colors relative cursor-pointer">
+                            <i class="bi bi-bell text-lg"></i>
+                            <span class="text-[8px] font-medium tracking-wider mt-0.5 uppercase">NOTIFICACIONES</span>
+                            <span class="absolute top-1 right-5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                         </div>
                     </nav>
 
