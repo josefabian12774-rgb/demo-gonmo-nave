@@ -229,20 +229,22 @@
 
                     </main>
 
-                    {/* VENTANA EMERGENTE / MODAL CON PROFUNDIDAD HOLOGRÁFICA */}
+                    {/* VENTANA EMERGENTE / MODAL CON CORRECCIÓN EN EL BOTÓN BOTÓN DE CIERRE */}
                     {selectedProduct && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/85 backdrop-blur-md">
+                            {/* Al tocar el fondo oscuro también se cierra */}
                             <div className="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
                             
                             <div className={`w-full max-w-[315px] rounded-3xl p-5 relative z-10 text-white animate-quantum ${
                                 selectedProduct.side === 'ALPHA' ? 'premium-modal-alpha' : 'premium-modal-practica'
                             }`}>
                                 
+                                {/* BOTÓN DE CIERRE (X) EN CORNER DERECHO - REFORZADO Y VISIBLE */}
                                 <button 
                                     onClick={() => setSelectedProduct(null)}
-                                    className="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs text-white/60 active:scale-90"
+                                    className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-slate-900 text-white border-2 border-white/20 flex items-center justify-center text-sm shadow-xl active:scale-90 z-50 cursor-pointer"
                                 >
-                                    <i className="bi bi-x-lg"></i>
+                                    <i className="bi bi-x-lg font-bold"></i>
                                 </button>
 
                                 <div className={`w-full h-28 rounded-2xl flex items-center justify-center border mb-4 relative overflow-hidden bg-slate-950/80 ${
