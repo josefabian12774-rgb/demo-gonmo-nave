@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE — FORCE VIDEO V3.3</title>
+    <title>GONMO NAVE — ULTRA FIXED V3.4</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -62,7 +62,7 @@
             box-shadow: 4px 4px 0px #0f172a, 0 8px 16px rgba(0,0,0,0.15);
         }
 
-        /* CONTENEDOR CENTRAL DEL VIDEO HOLOGRAMA */
+        /* CONTENEDOR CENTRAL DEL ROBOT (NUNCA FALLA EN MÓVILES) */
         .astro-center {
             position: absolute;
             top: 50%;
@@ -73,15 +73,15 @@
             flex-direction: column;
             align-items: center;
         }
-        .hologram-video-box {
-            width: 140px;
-            height: 175px;
+        .hologram-robot-box {
+            width: 120px;
+            height: 155px;
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.7));
+            filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.75));
         }
 
         /* ANIMACIÓN QUANTUM PARA EL MODAL */
@@ -100,21 +100,6 @@
     <script type="text/babel">
         function GonmoNaveSplit() {
             const [selectedProduct, setSelectedProduct] = React.useState(null);
-            const videoRef = React.useRef(null);
-
-            // Fuerza la reproducción en celulares saltándose el bloqueo de energía
-            React.useEffect(() => {
-                if (videoRef.current) {
-                    videoRef.current.muted = true;
-                    videoRef.current.defaultMuted = true;
-                    const playPromise = videoRef.current.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch(error => {
-                            console.log("Auto-play prevenido, reintentando...", error);
-                        });
-                    }
-                }
-            }, []);
 
             const productosAlpha = [
                 { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada. Latencia cero absoluta.", color: "text-cyan-400", side: "ALPHA" },
@@ -201,21 +186,14 @@
                             </div>
                         </div>
 
-                        {/* REPRODUCTOR MEJORADO CON REFERENCIA ACTIVA */}
+                        {/* RENDER COMPATIBLE MEDIANTE IMAGEN DIRECTA DEL CDN */}
                         <div class="astro-center pointer-events-none">
-                            <div class="hologram-video-box">
-                                <video 
-                                    ref={videoRef}
-                                    src="https://cdn.jsdelivr.net/gh/n12774-rgb/n12774-rgb.github.io/robot.mp4" 
-                                    preload="auto"
-                                    loop 
-                                    muted 
-                                    playsinline
-                                    webkit-playsinline="true"
-                                    class="w-full h-full object-contain block"
-                                >
-                                    Tu navegador no soporta video.
-                                </video>
+                            <div class="hologram-robot-box">
+                                <img 
+                                    src="https://cdn.jsdelivr.net/gh/n12774-rgb/n12774-rgb.github.io/1000096559.png" 
+                                    alt="Androide Holográfico"
+                                    class="w-full h-full object-contain block select-none"
+                                />
                             </div>
                             <div class="w-16 h-1 bg-cyan-400/30 blur-[2px] rounded-full mt-1.5 shadow-[0_0_10px_#22d3ee]"></div>
                         </div>
