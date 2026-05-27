@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE — PUSHUP CUSTOM V2.6</title>
+    <title>GONMO NAVE — PUSHUP CUSTOM V2.7</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -23,7 +23,7 @@
         }
         .font-space { font-family: 'Space Grotesk', sans-serif; }
 
-        /* SCROLL INDEPENDIENTE AISLADO */
+        /* SCROLL INDEPENDIENTE EN CADA MITAD */
         .col-nave {
             height: calc(100vh - 128px);
             overflow-y: scroll;
@@ -33,7 +33,7 @@
         }
         .col-nave::-webkit-scrollbar { display: none; }
 
-        /* Placas de Silicio por Sector */
+        /* Fondos Tecnológicos Estilo Rejilla */
         .silicon-alpha {
             background-color: #060b19;
             background-image: 
@@ -45,8 +45,8 @@
         .silicon-practica {
             background-color: #eab308;
             background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.07) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.07) 2px, transparent 2px),
+                linear-gradient(rgba(0, 0, 0, 0.05) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 2px, transparent 2px),
                 radial-gradient(circle at 50% 50%, #f4d03f, #ca8a04);
             background-size: 25px 25px, 25px 25px, 100% 100%;
         }
@@ -62,7 +62,7 @@
             box-shadow: 4px 4px 0px #0f172a, 0 8px 16px rgba(0,0,0,0.15);
         }
 
-        /* CONTENEDOR CENTRAL DEL ROBOT HOLOGRÁFICO TRANSPARENTE */
+        /* CONTENEDOR FLOTANTE CENTRAL PARA EL ANDROIDE */
         .astro-center {
             position: absolute;
             top: 50%;
@@ -74,26 +74,26 @@
             align-items: center;
         }
         .hologram-robot-box {
-            width: 110px;
-            height: 150px;
+            width: 120px;
+            height: 165px;
             position: relative;
-            animation: levitateQuantum 3.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px rgba(34, 211, 238, 0.75));
+            animation: levitateQuantum 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.85));
         }
 
-        /* LEVITACIÓN SUAVE ANTIGRAVEDAD */
+        /* EFECTO FLOTANTE DE BAJA GRAVEDAD */
         @keyframes levitateQuantum {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
         }
 
-        /* ANIMACIÓN QUANTUM PARA EL MODAL CENTRAL */
+        /* ANIMACIÓN PARA EL POPUP DE DETALLE */
         @keyframes pushUpQuantum {
-            0% { transform: scale(0.5) translateY(30px); opacity: 0; filter: blur(5px); }
+            0% { transform: scale(0.6) translateY(40px); opacity: 0; filter: blur(4px); }
             100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
         }
         .animate-quantum {
-            animation: pushUpQuantum 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+            animation: pushUpQuantum 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
         }
     </style>
 </head>
@@ -119,7 +119,7 @@
             return (
                 <div class="w-full h-full flex flex-col relative bg-slate-950">
                     
-                    {/* HEADER */}
+                    {/* TOP BAR */}
                     <header class="h-16 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10 z-50">
                         <div class="flex items-center space-x-2">
                             <i class="bi bi-list text-xl text-white"></i>
@@ -128,15 +128,15 @@
                         <i class="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
 
-                    {/* INTERFAZ DUAL COEXISTENTE ESTRICTO */}
+                    {/* VISTA ESCINDIDA 50/50 */}
                     <main class="flex-1 w-full flex relative overflow-hidden">
                         
-                        {/* ZONA ALPHA (50%) */}
+                        {/* COLUMNA IZQUIERDA: ALPHA */}
                         <div class="w-1/2 col-nave silicon-alpha px-2 py-4 border-r border-white/10">
                             <div class="mb-4 text-center border-b border-cyan-500/30 pb-2 sticky top-0 bg-[#060b19]/90 backdrop-blur-md z-20 rounded-b-lg">
                                 <h2 class="text-[10px] font-black font-space tracking-widest text-cyan-400 leading-none uppercase">// SILICIO ALPHA</h2>
                             </div>
-                            <div class="space-y-4 pb-20">
+                            <div class="space-y-4 pb-24">
                                 {productosAlpha.map(p => (
                                     <div 
                                         key={p.id} 
@@ -160,12 +160,12 @@
                             </div>
                         </div>
 
-                        {/* ZONA PRÁCTICA (50%) */}
+                        {/* COLUMNA DERECHA: PRÁCTICA */}
                         <div class="w-1/2 col-nave silicon-practica px-2 py-4">
                             <div class="mb-4 text-center border-b border-slate-950/20 pb-2 sticky top-0 bg-[#eab308]/90 backdrop-blur-md z-20 rounded-b-lg">
                                 <h2 class="text-[10px] font-black font-space tracking-widest text-slate-950 leading-none uppercase">// SILICIO PRÁCTICA</h2>
                             </div>
-                            <div class="space-y-4 pb-20">
+                            <div class="space-y-4 pb-24">
                                 {productosPractica.map(p => (
                                     <div 
                                         key={p.id} 
@@ -189,31 +189,28 @@
                             </div>
                         </div>
 
-                        {/* CENTRAL EJE CON TU ROBOT REAL DE CUERPO COMPLETO INYECTADO */}
+                        {/* ANDROIDE HOLOGRÁFICO EN INTERSECCIÓN EXACTA */}
                         <div class="astro-center pointer-events-none">
-                            <div class="hologram-robot-box pointer-events-auto flex items-center justify-center">
-                                
+                            <div class="hologram-robot-box flex items-center justify-center">
                                 <img 
-                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" 
-                                    alt="Astro-Gonmo Hologram" 
+                                    src="https://i.ibb.co/k2v0vVv/astro-gonmo-hologram.png" 
+                                    alt="Astro Gonmo" 
                                     class="w-full h-full object-contain block"
                                 />
-                                
                             </div>
-                            
-                            {/* Proyección del haz de luz holográfico inferior */}
-                            <div class="w-14 h-1.5 bg-cyan-400/25 blur-[2px] rounded-full mt-1 shadow-[0_0_10px_rgba(34,211,238,0.6)]"></div>
+                            {/* Proyección láser inferior de soporte */}
+                            <div class="w-16 h-1.5 bg-cyan-500/30 blur-[2px] rounded-full mt-2 shadow-[0_0_12px_rgba(6,182,212,0.8)]"></div>
                         </div>
 
                     </main>
 
-                    {/* MODAL PUSH-UP QUANTUM */}
+                    {/* MODAL PUSH-UP DETALLE */}
                     {selectedProduct && (
-                        <div class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/90 backdrop-blur-md">
+                        <div class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/85 backdrop-blur-md">
                             <div class="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
                             
-                            <div class={`w-full max-w-[310px] bg-gradient-to-b from-[#0b0f19] to-[#03050a] rounded-3xl p-5 relative z-10 border-2 text-white shadow-[0_25px_60px_rgba(0,0,0,0.9)] animate-quantum ${
-                                selectedProduct.side === 'ALPHA' ? 'border-cyan-500/50' : 'border-amber-500/60'
+                            <div class={`w-full max-w-[310px] bg-gradient-to-b from-[#0b0f19] to-[#03050a] rounded-3xl p-5 relative z-10 border-2 text-white shadow-[0_25px_60px_rgba(0,0,0,0.85)] animate-quantum ${
+                                selectedProduct.side === 'ALPHA' ? 'border-cyan-500/40' : 'border-amber-500/40'
                             }`}>
                                 
                                 <button 
@@ -223,12 +220,11 @@
                                     <i class="bi bi-x-lg"></i>
                                 </button>
 
-                                {/* SHOWCASE VISUAL DE PRODUCTO */}
                                 <div class={`w-full h-28 rounded-2xl flex items-center justify-center border mb-4 relative overflow-hidden bg-slate-950/60 ${
                                     selectedProduct.side === 'ALPHA' ? 'border-cyan-500/20 shadow-[inset_0_0_15px_rgba(6,182,212,0.1)]' : 'border-amber-500/20 shadow-[inset_0_0_15px_rgba(234,179,8,0.1)]'
                                 }`}>
-                                    <i class={`bi ${selectedProduct.icon} text-4xl ${selectedProduct.color} drop-shadow-[0_0_10px_currentColor]`}></i>
-                                    <span class="absolute bottom-2 right-3 text-[9px] font-bold font-space opacity-30 tracking-widest">{selectedProduct.code}</span>
+                                    <i class={`bi ${selectedProduct.icon} text-4xl ${selectedProduct.color} drop-shadow-[0_0_8px_currentColor]`}></i>
+                                    <span class="absolute bottom-2 right-3 text-[9px] font-bold font-space opacity-25 tracking-widest">{selectedProduct.code}</span>
                                 </div>
 
                                 <div class="text-center mb-4">
@@ -240,7 +236,7 @@
                                     </p>
                                 </div>
 
-                                <p class="text-[11px] text-slate-400 leading-relaxed text-center px-1 mb-4 line-clamp-3">
+                                <p class="text-[11px] text-slate-400 leading-relaxed text-center px-1 mb-4">
                                     {selectedProduct.detail}
                                 </p>
 
@@ -252,8 +248,8 @@
                                     
                                     <button class={`w-full h-11 rounded-xl font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-95 ${
                                         selectedProduct.side === 'ALPHA'
-                                            ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_15px_rgba(34,211,238,0.3)]'
-                                            : 'bg-amber-500 text-slate-950 shadow-[0_4px_15px_rgba(234,179,8,0.3)]'
+                                            ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_12px_rgba(34,211,238,0.3)]'
+                                            : 'bg-amber-500 text-slate-950 shadow-[0_4px_12px_rgba(234,179,8,0.3)]'
                                     }`}>
                                         <i class="bi bi-lightning-charge-fill"></i>
                                         <span>INYECTAR EN NAVE</span>
@@ -264,7 +260,7 @@
                         </div>
                     )}
 
-                    {/* BARRA INFERIOR COMERCIAL */}
+                    {/* BARRA DE NAVEGACIÓN INFERIOR */}
                     <nav class="h-16 w-full bg-slate-950 border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
                         <div class="flex flex-col items-center text-cyan-400 relative cursor-pointer">
                             <i class="bi bi-cart3 text-lg"></i>
