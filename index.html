@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE — ULTRA FIXED V3.4</title>
+    <title>GONMO NAVE — REAL FIXED</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -180,9 +180,12 @@
 
                         <div className="astro-center pointer-events-none">
                             <div className="hologram-robot-box">
-                                <img 
-                                    src="https://cdn.jsdelivr.net/gh/n12774-rgb/n12774-rgb.github.io/1000096559.png" 
-                                    alt="Androide Holográfico"
+                                <video 
+                                    src="./robot.mp4" 
+                                    autoPlay 
+                                    loop 
+                                    muted 
+                                    playsInline
                                     className="w-full h-full object-contain block select-none"
                                 />
                             </div>
