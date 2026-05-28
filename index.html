@@ -2,40 +2,49 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GONMO NAVE</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #02040a; }
-        .col-nave { height: calc(100vh - 64px); overflow-y: auto; }
+        body { background-color: #02040a; color: white; overflow: hidden; }
+        .logo-glow { filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.6)); }
     </style>
 </head>
 <body>
-    <div id="root" class="w-full h-full"></div>
+    <div id="root"></div>
+
     <script type="text/babel">
         function App() {
             return (
-                <div className="w-full h-full flex flex-col text-white">
-                    <header className="h-16 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10">
-                        <div className="flex items-center space-x-3">
-                            <i className="bi bi-list text-xl"></i>
-                            <div className="flex items-center space-x-2">
-                                <img src="./logo.JPG" alt="Logo" className="h-8 w-8 object-cover rounded-md border border-cyan-500/30" />
-                                <span className="text-[10px] font-bold tracking-widest text-white/70 uppercase">GONMO<br/><span className="text-cyan-400">NAVE</span></span>
-                            </div>
-                        </div>
-                        <i className="bi bi-search text-lg"></i>
+                <div className="h-screen w-full flex flex-col">
+                    {/* Header con el logo centrado y menú lateral */}
+                    <header className="h-16 flex items-center justify-between px-4 border-b border-white/10">
+                        <i className="bi bi-list text-2xl"></i>
+                        <img src="./logo.JPG" alt="GonMo" className="h-10 w-10 rounded-lg logo-glow" />
+                        <i className="bi bi-search text-xl"></i>
                     </header>
-                    <main className="flex-1 flex overflow-hidden">
-                        <div className="w-1/2 col-nave bg-slate-900 border-r border-white/10">
-                            <h2 className="text-center py-4 text-cyan-400 font-bold text-xs uppercase">// Silicio Alpha</h2>
+
+                    {/* Área principal con el robot */}
+                    <main className="flex-1 relative flex flex-col items-center pt-10">
+                        <h1 className="text-white font-bold text-xl mb-4 text-center">GONMO NAVE</h1>
+                        
+                        {/* Robot en el centro */}
+                        <div className="w-40 h-40 bg-slate-800 rounded-full flex items-center justify-center mb-10 border border-cyan-500/50">
+                            <i className="bi bi-robot text-6xl text-cyan-400"></i>
                         </div>
-                        <div className="w-1/2 col-nave bg-yellow-500">
-                            <h2 className="text-center py-4 text-slate-900 font-bold text-xs uppercase">// Silicio Práctica</h2>
+
+                        {/* Sectores */}
+                        <div className="flex w-full px-4 gap-4">
+                            <div className="flex-1 h-32 bg-slate-900 border border-cyan-900 rounded-xl flex items-center justify-center">
+                                <span className="text-cyan-400 font-bold text-xs">// SILICIO ALPHA</span>
+                            </div>
+                            <div className="flex-1 h-32 bg-yellow-500 rounded-xl flex items-center justify-center">
+                                <span className="text-slate-900 font-bold text-xs">// SILICIO PRÁCTICA</span>
+                            </div>
                         </div>
                     </main>
                 </div>
