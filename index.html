@@ -12,110 +12,20 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Space+Grotesk:wght@700;900&display=swap');
         
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #030712;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; }
         .font-space { font-family: 'Space Grotesk', sans-serif; }
-
-        .col-nave {
-            height: calc(100vh - 128px);
-            overflow-y: scroll;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            padding-top: 24px;
-        }
+        .col-nave { height: calc(100vh - 128px); overflow-y: auto; scroll-behavior: smooth; padding-top: 24px; }
         .col-nave::-webkit-scrollbar { display: none; }
-
-        .silicon-alpha {
-            background-color: #060b19;
-            background-image: 
-                linear-gradient(rgba(6, 182, 212, 0.05) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(6, 182, 212, 0.05) 2px, transparent 2px),
-                radial-gradient(circle at 50% 50%, rgba(17, 28, 58, 0.6), #050914);
-            background-size: 20px 20px, 20px 20px, 100% 100%;
-        }
-        .silicon-practica {
-            background-color: #d9a406;
-            background-image: 
-                linear-gradient(rgba(15, 23, 42, 0.04) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(15, 23, 42, 0.04) 2px, transparent 2px),
-                radial-gradient(circle at 50% 50%, #f1c40f, #b78a02);
-            background-size: 20px 20px, 20px 20px, 100% 100%;
-        }
-
-        .card-alpha-silicon {
-            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
-            border: 2px solid rgba(6, 182, 212, 0.2);
-            box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.05), 0 12px 24px rgba(0,0,0,0.4);
-        }
-        .card-practica-silicon {
-            background: #ffffff;
-            border: 2px solid #1e293b;
-            box-shadow: 4px 4px 0px #1e293b, 0 8px 16px rgba(0,0,0,0.12);
-        }
-
-        .premium-modal-alpha {
-            background: linear-gradient(180deg, #0b1329 0%, #030712 100%);
-            border: 2px solid #22d3ee;
-            box-shadow: 
-                0 0 35px rgba(6, 182, 212, 0.4), 
-                inset 0 0 20px rgba(6, 182, 212, 0.15),
-                0 30px 60px rgba(0,0,0,0.85);
-        }
-        .premium-modal-practica {
-            background: linear-gradient(180deg, #1c1917 0%, #0c0a09 100%);
-            border: 2px solid #f59e0b;
-            box-shadow: 
-                0 0 35px rgba(245, 158, 11, 0.35), 
-                inset 0 0 20px rgba(245, 158, 11, 0.1),
-                0 30px 60px rgba(0,0,0,0.85);
-        }
-
-        .astro-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 40;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 115px;
-            height: 150px;
-            pointer-events: none;
-        }
-        .hologram-robot-box {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: drop-shadow(0 0 14px rgba(6, 182, 212, 0.75));
-        }
-
-        @keyframes proyectorPulse {
-            0%, 100% { transform: scale(1); opacity: 0.3; filter: blur(2px); }
-            50% { transform: scale(1.2); opacity: 0.6; filter: blur(1px); }
-        }
-        .hologram-glow {
-            animation: proyectorPulse 2s ease-in-out infinite;
-        }
-
+        .silicon-alpha { background-color: #060b19; }
+        .silicon-practica { background-color: #d9a406; }
+        .card-alpha-silicon { background: linear-gradient(135deg, #0f172a 0%, #020617 100%); border: 2px solid rgba(6, 182, 212, 0.2); }
+        .card-practica-silicon { background: #ffffff; border: 2px solid #1e293b; }
+        
         @keyframes pushUpQuantum {
             0 { transform: scale(0.85) translateY(40px); opacity: 0; }
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
-        .animate-quantum {
-            animation: pushUpQuantum 0.22s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-        }
+        .animate-quantum { animation: pushUpQuantum 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
     </style>
 </head>
 <body class="antialiased select-none text-white bg-slate-950">
@@ -123,67 +33,50 @@
 
     <script type="text/babel">
         function GonmoNaveSplit() {
-            const [selectedProduct, setSelectedProduct] = React.useState(null);
-
             const productosAlpha = [
-                { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada. Latencia cero absoluta.", color: "text-cyan-400", side: "ALPHA" },
-                { id: 2, title: "TITAN RDX", spec: "12GB GDDR6", price: "$1.299", icon: "bi-gpu-card", code: "G12", detail: "Microprocesador tensorial masivo con soporte nativo para trazado de rayos y cálculo complejo.", color: "text-purple-400", side: "ALPHA" },
-                { id: 3, title: "K-BOARD 75", spec: "MECHANICAL RGB", price: "$220.00", icon: "bi-keyboard", code: "K75", detail: "Plataforma compacta hot-swappable con switches lubricados de fábrica y keycaps PBT.", color: "text-emerald-400", side: "ALPHA" }
+                { id: 1, title: "NIGHTHAWK", icon: "bi-mouse3", color: "text-cyan-400" },
+                { id: 2, title: "TITAN RDX", icon: "bi-gpu-card", color: "text-purple-400" },
+                { id: 3, title: "K-BOARD 75", icon: "bi-keyboard", color: "text-emerald-400" }
             ];
 
             const productosPractica = [
-                { id: 4, title: "DRILL 18V", spec: "POWER TORQUE", price: "$249.99", icon: "bi-nut", code: "T18", detail: "Motor industrial brushless de torque continuo, chasis de policarbonato reforzado anti-caídas.", color: "text-slate-900", side: "PRACTICA" },
-                { id: 5, title: "AMBI-LIGHT", spec: "SMART WIFI", price: "$169.99", icon: "bi-lightbulb", code: "L04", detail: "Lámpara domótica con matriz LED sintonizable y sincronización de audio de baja latencia.", color: "text-slate-900", side: "PRACTICA" },
-                { id: 6, title: "ROUTER CNC", spec: "MICRO MILLING", price: "$450.00", icon: "bi-cpu", code: "C09", detail: "Fresadora de precisión milimétrica guiada por controlador integrado de estado sólido.", color: "text-slate-900", side: "PRACTICA" }
+                { id: 4, title: "DRILL 18V", icon: "bi-nut", color: "text-slate-900" },
+                { id: 5, title: "AMBI-LIGHT", icon: "bi-lightbulb", color: "text-slate-900" },
+                { id: 6, title: "ROUTER CNC", icon: "bi-cpu", color: "text-slate-900" }
             ];
 
             return (
-                <div className="w-full h-full flex flex-col relative bg-slate-950">
-                    
-                    <header className="h-16 w-full flex items-center justify-between px-4 bg-slate-950/95 border-b border-white/10 z-50 backdrop-blur-md">
-                        <div className="flex items-center space-x-2">
-                            <i className="bi bi-list text-xl text-white"></i>
-                        </div>
-                        
-                        {/* Logo agrandado (h-20 w-20) para eliminar el vacío */}
-                        <div className="absolute left-1/2 transform -translate-x-1/2 z-50">
-                            <img src="./logo.JPG" alt="Logo" className="h-20 w-20 object-contain" />
-                        </div>
-
-                        <i className="bi bi-search text-lg text-white opacity-80"></i>
+                <div className="w-full h-full flex flex-col bg-slate-950">
+                    {/* Header corregido: el logo es parte del flujo, eliminando el vacío y el choque absoluto */}
+                    <header className="h-20 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10 z-50">
+                        <i className="bi bi-list text-xl text-white"></i>
+                        <img src="./logo.JPG" alt="Logo" className="h-16 w-16 object-contain" />
+                        <i className="bi bi-search text-lg text-white"></i>
                     </header>
 
-                    <main className="flex-1 w-full flex relative overflow-hidden">
-                        
-                        <div className="w-1/2 col-nave silicon-alpha px-2 border-r border-white/10">
-                            <div className="mb-4 text-center border-b border-cyan-500/30 pb-2 sticky top-0 bg-[#060b19]/90 backdrop-blur-md z-20 rounded-b-lg shadow-sm">
-                                <h2 className="text-[10px] font-black font-space tracking-widest text-cyan-400 leading-none uppercase">// SILICIO ALPHA</h2>
-                            </div>
-                            <div className="space-y-4 pb-28">
-                                {productosAlpha.map(p => (
-                                    <div 
-                                        key={p.id} 
-                                        onClick={() => setSelectedProduct(p)}
-                                        className="card-alpha-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95 animate-quantum"
-                                    >
-                                        <div className="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-950/60 border border-cyan-500/20">
-                                            <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
-                                        </div>
-                                        <div className="mt-2">
-                                            <h3 className="text-xs font-black tracking-tight text-white uppercase truncate">{p.title}</h3>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                    <main className="flex-1 w-full flex overflow-hidden">
+                        <div className="w-1/2 col-nave silicon-alpha px-2">
+                            {productosAlpha.map(p => (
+                                <div key={p.id} className="card-alpha-silicon rounded-2xl p-4 mb-4 animate-quantum">
+                                    <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
+                                    <h3 className="text-xs font-black text-white mt-2">{p.title}</h3>
+                                </div>
+                            ))}
                         </div>
-
                         <div className="w-1/2 col-nave silicon-practica px-2">
-                            <div className="mb-4 text-center border-b border-slate-950/20 pb-2 sticky top-0 bg-[#d9a406]/90 backdrop-blur-md z-20 rounded-b-lg shadow-sm">
-                                <h2 className="text-[10px] font-black font-space tracking-widest text-slate-950 leading-none uppercase">// SILICIO PRÁCTICA</h2>
-                            </div>
-                            <div className="space-y-4 pb-28">
-                                {productosPractica.map(p => (
-                                    <div 
-                                        key={p.id} 
-                                        onClick={() => setSelectedProduct(p)}
-                                        className="card-practica-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:
+                            {productosPractica.map(p => (
+                                <div key={p.id} className="card-practica-silicon rounded-2xl p-4 mb-4 animate-quantum">
+                                    <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
+                                    <h3 className="text-xs font-black text-slate-900 mt-2">{p.title}</h3>
+                                </div>
+                            ))}
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<GonmoNaveSplit />);
+    </script>
+</body>
+</html>
