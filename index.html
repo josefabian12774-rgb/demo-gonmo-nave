@@ -3,58 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>GONMO NAVE — ESTRUCTURA FINAL</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Space+Grotesk:wght@700;900&display=swap');
+        
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; background-color: #02040a; }
-        .col-nave { height: calc(100vh - 128px); overflow-y: scroll; scroll-behavior: smooth; padding-top: 24px; }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+
+        .col-nave { height: calc(100vh - 128px); overflow-y: scroll; overflow-x: hidden; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding-top: 24px; }
         .col-nave::-webkit-scrollbar { display: none; }
-        .silicon-alpha { background: radial-gradient(circle at 50% 50%, rgba(17, 28, 58, 0.6), #050914); }
-        .silicon-practica { background: radial-gradient(circle at 50% 50%, #f1c40f, #b78a02); }
-        .card-alpha { background: linear-gradient(135deg, #0f172a 0%, #020617 100%); border: 2px solid rgba(6, 182, 212, 0.2); }
-        .card-practica { background: #ffffff; border: 2px solid #1e293b; }
+
+        .silicon-alpha { background-color: #060b19; background-image: linear-gradient(rgba(6, 182, 212, 0.05) 2px, transparent 2px), linear-gradient(90deg, rgba(6, 182, 212, 0.05) 2px, transparent 2px), radial-gradient(circle at 50% 50%, rgba(17, 28, 58, 0.6), #050914); background-size: 20px 20px, 20px 20px, 100% 100%; }
+        .silicon-practica { background-color: #d9a406; background-image: linear-gradient(rgba(15, 23, 42, 0.04) 2px, transparent 2px), linear-gradient(90deg, rgba(15, 23, 42, 0.04) 2px, transparent 2px), radial-gradient(circle at 50% 50%, #f1c40f, #b78a02); background-size: 20px 20px, 20px 20px, 100% 100%; }
+
+        .card-alpha-silicon { background: linear-gradient(135deg, #0f172a 0%, #020617 100%); border: 2px solid rgba(6, 182, 212, 0.2); box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.05), 0 12px 24px rgba(0,0,0,0.4); }
+        .card-practica-silicon { background: #ffffff; border: 2px solid #1e293b; box-shadow: 4px 4px 0px #1e293b, 0 8px 16px rgba(0,0,0,0.12); }
+
+        .premium-modal-alpha { background: rgba(11, 19, 41, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(34, 211, 238, 0.3); border-top: 3px solid rgba(34, 211, 238, 0.8); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 40px rgba(34, 211, 238, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+        .premium-modal-practica { background: rgba(28, 25, 23, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.3); border-top: 3px solid rgba(245, 158, 11, 0.8); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 40px rgba(245, 158, 11, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+
+        .astro-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 40; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 115px; height: 150px; pointer-events: none; }
+        .hologram-robot-box { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 14px rgba(6, 182, 212, 0.75)); }
+        
+        @keyframes proyectorPulse { 0%, 100% { transform: scale(1); opacity: 0.3; filter: blur(2px); } 50% { transform: scale(1.2); opacity: 0.6; filter: blur(1px); } }
         .hologram-glow { animation: proyectorPulse 2s ease-in-out infinite; }
-        @keyframes proyectorPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+        @keyframes quantumEntrance { 0% { transform: scale(0.7) translateY(60px) rotateX(20deg); opacity: 0; } 100% { transform: scale(1) translateY(0) rotateX(0deg); opacity: 1; } }
+        .animate-quantum { animation: quantumEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; perspective: 1000px; }
     </style>
 </head>
-<body>
+<body class="antialiased select-none text-white bg-slate-950">
     <div id="root" class="w-full h-full"></div>
+
     <script type="text/babel">
-        function App() {
-            const [selected, setSelected] = React.useState(null);
+        function GonmoNaveSplit() {
+            const [selectedProduct, setSelectedProduct] = React.useState(null);
+            const productosAlpha = [
+                { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada.", color: "text-cyan-400", side: "ALPHA" },
+                { id: 2, title: "TITAN RDX", spec: "12GB GDDR6", price: "$1.299", icon: "bi-gpu-card", code: "G12", detail: "Microprocesador tensorial masivo con soporte nativo para trazado de rayos.", color: "text-purple-400", side: "ALPHA" }
+            ];
+            const productosPractica = [
+                { id: 3, title: "DRILL 18V", spec: "POWER TORQUE", price: "$249.99", icon: "bi-nut", code: "T18", detail: "Motor industrial brushless de torque continuo, chasis reforzado.", color: "text-slate-900", side: "PRACTICA" },
+                { id: 4, title: "ROUTER CNC", spec: "MICRO MILLING", price: "$450.00", icon: "bi-cpu", code: "C09", detail: "Fresadora de precisión milimétrica guiada por controlador.", color: "text-slate-900", side: "PRACTICA" }
+            ];
+
             return (
-                <div className="w-full h-full flex flex-col bg-slate-950 text-white">
-                    <header className="h-16 w-full flex items-center justify-between px-4 border-b border-white/10 backdrop-blur-md">
-                        <i className="bi bi-list text-xl"></i>
-                        <div className="flex items-center space-x-2">
-                            <img src="./logo.JPG" alt="GonMo" className="h-8 w-8 object-cover rounded-md border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-white/70">GONMO<br/><span className="text-cyan-400">NAVE</span></span>
+                <div className="w-full h-full flex flex-col relative bg-slate-950">
+                    <header className="h-16 w-full flex items-center justify-between px-4 bg-slate-950/95 border-b border-white/10 z-50 backdrop-blur-md">
+                        <div className="flex items-center space-x-3">
+                            <i className="bi bi-list text-xl text-white"></i>
+                            <div className="flex items-center space-x-2">
+                                <img src="./logo.JPG" alt="GonMo Logo" className="h-8 w-8 object-cover rounded-md border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.5)]"/>
+                                <span className="text-[10px] font-bold tracking-widest font-space text-white/70 uppercase leading-none">GONMO<br/><span className="text-[8px] text-cyan-400">NAVE</span></span>
+                            </div>
                         </div>
-                        <i className="bi bi-search text-lg"></i>
+                        <i className="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
-                    <main className="flex-1 flex relative overflow-hidden">
+
+                    <main className="flex-1 w-full flex relative overflow-hidden">
                         <div className="w-1/2 col-nave silicon-alpha px-2 border-r border-white/10">
-                            <h2 className="text-[10px] font-bold text-cyan-400 text-center uppercase pb-4">// SILICIO ALPHA</h2>
-                            <div className="card-alpha rounded-2xl p-4 h-32 mb-4 cursor-pointer" onClick={() => setSelected('ALPHA')}></div>
+                            <h2 className="text-[10px] font-black font-space tracking-widest text-cyan-400 text-center uppercase pb-4">// SILICIO ALPHA</h2>
+                            {productosAlpha.map(p => (
+                                <div key={p.id} onClick={() => setSelectedProduct(p)} className="card-alpha-silicon rounded-2xl p-3 mb-4 h-[180px] cursor-pointer">
+                                    <div className="w-full h-20 rounded-xl bg-slate-950/60 border border-cyan-500/20 flex items-center justify-center"><i className={`bi ${p.icon} text-3xl ${p.color}`}></i></div>
+                                    <h3 className="text-xs font-black text-white mt-2 uppercase">{p.title}</h3>
+                                </div>
+                            ))}
                         </div>
                         <div className="w-1/2 col-nave silicon-practica px-2">
-                            <h2 className="text-[10px] font-bold text-slate-950 text-center uppercase pb-4">// SILICIO PRÁCTICA</h2>
-                            <div className="card-practica rounded-2xl p-4 h-32 mb-4 cursor-pointer" onClick={() => setSelected('PRACTICA')}></div>
+                            <h2 className="text-[10px] font-black font-space tracking-widest text-slate-950 text-center uppercase pb-4">// SILICIO PRÁCTICA</h2>
+                            {productosPractica.map(p => (
+                                <div key={p.id} onClick={() => setSelectedProduct(p)} className="card-practica-silicon rounded-2xl p-3 mb-4 h-[180px] cursor-pointer">
+                                    <div className="w-full h-20 rounded-xl bg-slate-100/90 border border-slate-950/15 flex items-center justify-center"><i className={`bi ${p.icon} text-3xl ${p.color}`}></i></div>
+                                    <h3 className="text-xs font-black text-slate-900 mt-2 uppercase">{p.title}</h3>
+                                </div>
+                            ))}
                         </div>
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40">
-                            <i className="bi bi-robot text-5xl text-cyan-400 hologram-glow"></i>
-                        </div>
+                        <div className="astro-center"><div className="hologram-robot-box"><i className="bi bi-robot text-5xl text-cyan-400"></i></div><div className="w-14 h-1 bg-cyan-400/40 rounded-full mt-0.5 hologram-glow"></div></div>
                     </main>
-                    {selected && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={() => setSelected(null)}>
-                            <div className="bg-slate-900 p-6 rounded-3xl w-full max-w-sm border border-white/10">
-                                <h2 className="text-xl font-bold uppercase mb-4">{selected}</h2>
-                                <button className="w-full h-12 bg-cyan-500 rounded-xl font-bold text-slate-950" onClick={() => setSelected(null)}>CERRAR</button>
+
+                    {selectedProduct && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/90 backdrop-blur-xl" onClick={() => setSelectedProduct(null)}>
+                            <div className={`w-full max-w-[315px] rounded-[32px] p-6 relative animate-quantum ${selectedProduct.side === 'ALPHA' ? 'premium-modal-alpha' : 'premium-modal-practica'}`} onClick={e => e.stopPropagation()}>
+                                <button onClick={() => setSelectedProduct(null)} className="absolute -top-4 -right-2 w-9 h-9 rounded-full bg-slate-950 text-white border-2 border-white/20 flex items-center justify-center z-50"><i className="bi bi-x-lg"></i></button>
+                                <div className="w-full h-32 rounded-2xl flex items-center justify-center border-b-4 mb-5 bg-black/40"><i className={`bi ${selectedProduct.icon} text-5xl ${selectedProduct.side === 'ALPHA' ? selectedProduct.color : 'text-amber-400'}`}></i></div>
+                                <h2 className="text-xl font-black font-space text-center uppercase">{selectedProduct.title}</h2>
+                                <p className="text-xs text-slate-300 text-center mt-4 mb-6">{selectedProduct.detail}</p>
+                                <button className="w-full h-12 rounded-xl bg-cyan-400 text-slate-950 font-black text-xs uppercase">Comprar Ahora</button>
                             </div>
                         </div>
                     )}
@@ -62,7 +101,7 @@
             );
         }
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        root.render(<GonmoNaveSplit />);
     </script>
 </body>
 </html>
