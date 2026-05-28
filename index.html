@@ -3,63 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GONMO NAVE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>GONMO NAVE — PREMIUM VISUAL</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        body { background-color: #030712; color: white; overflow: hidden; font-family: sans-serif; }
-        .col-nave { height: calc(100vh - 128px); overflow-y: scroll; scroll-behavior: smooth; padding-top: 24px; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=700;800&family=Space+Grotesk:wght=700;900&display=swap');
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+        }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+
+        /* Contenedor de columnas con desvanecimiento superior e inferior */
+        .col-nave {
+            height: calc(100vh - 128px);
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding-top: 24px;
+        }
         .col-nave::-webkit-scrollbar { display: none; }
-        .hologram-robot { filter: drop-shadow(0 0 15px #06b6d4); animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* Fondos Estructurados */
+        .silicon-alpha {
+            background-color: #060b19;
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.05) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.05) 2px, transparent 2px),
+                radial-gradient(circle at 50% 50%, rgba(17, 28, 58, 0.6), #050914);
+            background-size: 20px 20px, 20px 20px, 100% 100%;
+        }
+        .silicon-practica {
+            background-color: #d9a406;
+            background-image: 
+                linear-gradient(rgba(15, 23, 42, 0.04) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.04) 2px, transparent 2px),
+                radial-gradient(circle at 50% 50%, #f1c40f, #b78a02);
+            background-size: 20px 20px, 20px 20px, 100% 100%;
+        }
+
+        /* Tarjetas Base */
+        .card-alpha-silicon {
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            border: 2px solid rgba(6, 182, 212, 0.2);
+            box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.05), 0 12px 24px rgba(0,0,0,0.4);
+        }
+        .card-practica-silicon {
+            background: #ffffff;
+            border: 2px solid #1e293b;
+            box-shadow: 4px 4px 0px #1e293b, 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        /* Altura y Efecto de Flotación para los Modales */
+        .premium-modal-alpha {
+            background: linear-gradient(180deg, #0b1329 0%, #030712 100%);
+            border: 2px solid #22d3ee;
+            box-shadow: 
+                0 0 35px rgba(6, 182, 212, 0.4), 
+                inset 0 0 20px rgba(6, 182, 212, 0.15),
+                0 30px 60px rgba(0,0,0,0.85);
+        }
+        .premium-modal-practica {
+            background: linear-gradient(180deg, #1c1917 0%, #0c0a09 100%);
+            border: 2px solid #f59e0b;
+            box-shadow: 
+                0 0 35px rgba(245, 158, 11, 0.35), 
+                inset 0 0 20px rgba(245, 158, 11, 0.1),
+                0 30px 60px rgba(0,0,0,0.85);
+        }
+
+        /* Posicionamiento absoluto del Holograma */
+        .astro-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 115px;
+            height: 150px;
+            pointer-events: none;
+        }
+        .hologram-robot-box {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 14px rgba(6, 182, 212, 0.75));
+        }
+
+        /* Animación de pulsación del proyector */
+        @keyframes proyectorPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; filter: blur(2px); }
+            50% { transform: scale(1.2); opacity: 0.6; filter: blur(1px); }
+        }
+        .hologram-glow {
+            animation: proyectorPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pushUpQuantum {
+            0 { transform: scale(0.85) translateY(40px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .animate-quantum {
+            animation: pushUpQuantum 0.22s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        }
     </style>
 </head>
-<body>
+<body class="antialiased select-none text-white bg-slate-950">
     <div id="root" class="w-full h-full"></div>
+
     <script type="text/babel">
-        function App() {
+        function GonmoNaveSplit() {
+            const [selectedProduct, setSelectedProduct] = React.useState(null);
+
+            const productosAlpha = [
+                { id: 1, title: "NIGHTHAWK", spec: "18K DPI SENSOR", price: "$189.99", icon: "bi-mouse3", code: "M01", detail: "Switches ópticos de respuesta inmediata montados sobre placa aislada. Latencia cero absoluta.", color: "text-cyan-400", side: "ALPHA" },
+                { id: 2, title: "TITAN RDX", spec: "12GB GDDR6", price: "$1.299", icon: "bi-gpu-card", code: "G12", detail: "Microprocesador tensorial masivo con soporte nativo para trazado de rayos y cálculo complejo.", color: "text-purple-400", side: "ALPHA" },
+                { id: 3, title: "K-BOARD 75", spec: "MECHANICAL RGB", price: "$220.00", icon: "bi-keyboard", code: "K75", detail: "Plataforma compacta hot-swappable con switches lubricados de fábrica y keycaps PBT.", color: "text-emerald-400", side: "ALPHA" }
+            ];
+
+            const productosPractica = [
+                { id: 4, title: "DRILL 18V", spec: "POWER TORQUE", price: "$249.99", icon: "bi-nut", code: "T18", detail: "Motor industrial brushless de torque continuo, chasis de policarbonato reforzado anti-caídas.", color: "text-slate-900", side: "PRACTICA" },
+                { id: 5, title: "AMBI-LIGHT", spec: "SMART WIFI", price: "$169.99", icon: "bi-lightbulb", code: "L04", detail: "Lámpara domótica con matriz LED sintonizable y sincronización de audio de baja latencia.", color: "text-slate-900", side: "PRACTICA" },
+                { id: 6, title: "ROUTER CNC", spec: "MICRO MILLING", price: "$450.00", icon: "bi-cpu", code: "C09", detail: "Fresadora de precisión milimétrica guiada por controlador integrado de estado sólido.", color: "text-slate-900", side: "PRACTICA" }
+            ];
+
             return (
-                <div className="w-full h-screen flex flex-col">
-                    {/* Header con Logo centrado */}
-                    <header className="h-16 flex items-center justify-between px-4 border-b border-white/10 bg-slate-950 z-50">
-                        <i className="bi bi-list text-2xl"></i>
-                        <img src="./logo.JPG" alt="Logo" className="h-10 w-10 rounded-lg border border-cyan-500/30" />
-                        <i className="bi bi-search text-xl"></i>
+                <div className="w-full h-full flex flex-col relative bg-slate-950">
+                    
+                    {/* ENCABEZADO TRASLÚCIDO PREMIUM */}
+                    <header className="h-16 w-full flex items-center justify-between px-4 bg-slate-950/95 border-b border-white/10 z-50 backdrop-blur-md">
+                        <div className="flex items-center space-x-2">
+                            <i className="bi bi-list text-xl text-white"></i>
+                        </div>
+                        
+                        {/* LOGO AGREGADO CENTRADO */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2">
+                            <img src="./logo.JPG" alt="Logo" className="h-10 w-10 object-cover rounded-lg border border-cyan-500/30" />
+                        </div>
+
+                        <i className="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
 
-                    <main className="flex-1 flex relative">
-                        {/* Columnas */}
-                        <div className="w-1/2 col-nave bg-[#060b19] border-r border-white/10 p-2">
-                            <h2 className="text-center text-cyan-400 font-bold text-[10px] mb-4">// SILICIO ALPHA</h2>
-                            <div className="h-32 border border-cyan-500/30 rounded-xl mb-4 bg-slate-900/50"></div>
-                            <div className="h-32 border border-cyan-500/30 rounded-xl bg-slate-900/50"></div>
-                        </div>
-                        <div className="w-1/2 col-nave bg-yellow-500 p-2">
-                            <h2 className="text-center text-slate-900 font-bold text-[10px] mb-4">// SILICIO PRÁCTICA</h2>
-                            <div className="h-32 border border-slate-900/20 rounded-xl mb-4 bg-white"></div>
-                            <div className="h-32 border border-slate-900/20 rounded-xl bg-white"></div>
+                    <main className="flex-1 w-full flex relative overflow-hidden">
+                        
+                        {/* COLUMNA SILICIO ALPHA */}
+                        <div className="w-1/2 col-nave silicon-alpha px-2 border-r border-white/10">
+                            <div className="mb-4 text-center border-b border-cyan-500/30 pb-2 sticky top-0 bg-[#060b19]/90 backdrop-blur-md z-20 rounded-b-lg shadow-sm">
+                                <h2 className="text-[10px] font-black font-space tracking-widest text-cyan-400 leading-none uppercase">// SILICIO ALPHA</h2>
+                            </div>
+                            <div className="space-y-4 pb-28">
+                                {productosAlpha.map(p => (
+                                    <div 
+                                        key={p.id} 
+                                        onClick={() => setSelectedProduct(p)}
+                                        className="card-alpha-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95"
+                                    >
+                                        <div className="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-950/60 border border-cyan-500/20">
+                                            <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
+                                            <span className="absolute bottom-1 right-2 text-[8px] font-bold font-space text-cyan-500/30 tracking-widest">{p.code}</span>
+                                        </div>
+                                        <div className="mt-2">
+                                            <h3 className="text-xs font-black tracking-tight text-white uppercase truncate">{p.title}</h3>
+                                            <p className="text-[8px] font-bold text-cyan-400/80 tracking-wider uppercase mt-0.5">{p.spec}</p>
+                                        </div>
+                                        <div className="flex items-center justify-between mt-2 pt-1 border-t border-white/5">
+                                            <span className="text-xs font-black font-space text-white">{p.price}</span>
+                                            <span className="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-[10px] shadow-lg"><i className="bi bi-eye-fill"></i></span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
-                        {/* Robot en el medio */}
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 hologram-robot">
-                            <i className="bi bi-robot text-6xl text-cyan-400"></i>
+                        {/* COLUMNA SILICIO PRÁCTICA */}
+                        <div className="w-1/2 col-nave silicon-practica px-2">
+                            <div className="mb-4 text-center border-b border-slate-950/20 pb-2 sticky top-0 bg-[#d9a406]/90 backdrop-blur-md z-20 rounded-b-lg shadow-sm">
+                                <h2 className="text-[10px] font-black font-space tracking-widest text-slate-950 leading-none uppercase">// SILICIO PRÁCTICA</h2>
+                            </div>
+                            <div className="space-y-4 pb-28">
+                                {productosPractica.map(p => (
+                                    <div 
+                                        key={p.id} 
+                                        onClick={() => setSelectedProduct(p)}
+                                        className="card-practica-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95"
+                                    >
+                                        <div className="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-100/90 border border-slate-950/15">
+                                            <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
+                                            <span className="absolute bottom-1 right-2 text-[8px] font-bold font-space text-slate-950/20 tracking-widest">{p.code}</span>
+                                        </div>
+                                        <div className="mt-2">
+                                            <h3 className="text-xs font-black tracking-tight text-slate-900 uppercase truncate">{p.title}</h3>
+                                            <p className="text-[8px] font-black text-slate-800 tracking-wider uppercase mt-0.5">{p.spec}</p>
+                                        </div>
+                                        <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-300">
+                                            <span className="text-xs font-black font-space text-slate-900">{p.price}</span>
+                                            <span className="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center text-[10px] shadow-md"><i className="bi bi-eye-fill"></i></span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
+
+                        {/* ANDROIDE HOLOGRAMA CON HAZ DE LUZ EMISOR */}
+                        <div className="astro-center">
+                            <div className="hologram-robot-box">
+                                <img 
+                                    src="./robot.gif" 
+                                    className="w-full h-full object-contain block select-none"
+                                    alt="Astro"
+                                />
+                            </div>
+                            <div className="w-14 h-1 bg-cyan-400/40 rounded-full mt-0.5 hologram-glow shadow-[0_0_10px_#22d3ee]"></div>
+                        </div>
+
                     </main>
 
-                    {/* Footer */}
-                    <footer className="h-16 flex items-center justify-around border-t border-white/10 bg-slate-950">
-                        <div className="flex flex-col items-center"><i className="bi bi-cart"></i><span className="text-[10px]">CARRITO</span></div>
-                        <div className="flex flex-col items-center"><i className="bi bi-person"></i><span className="text-[10px]">PERFIL</span></div>
-                        <div className="flex flex-col items-center"><i className="bi bi-bell"></i><span className="text-[10px]">ALERTAS</span></div>
-                    </footer>
+                    {/* VENTANA EMERGENTE / MODAL CON CORRECCIÓN EN EL BOTÓN BOTÓN DE CIERRE */}
+                    {selectedProduct && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/85 backdrop-blur-md">
+                            {/* Al tocar el fondo oscuro también se cierra */}
+                            <div className="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
+                            
+                            <div className={`w-full max-w-[315px] rounded-3xl p-5 relative z-10 text-white animate-quantum ${
+                                selectedProduct.side === 'ALPHA' ? 'premium-modal-alpha' : 'premium-modal-practica'
+                            }`}>
+                                
+                                {/* BOTÓN DE CIERRE (X) EN CORNER DERECHO - REFORZADO Y VISIBLE */}
+                                <button 
+                                    onClick={() => setSelectedProduct(null)}
+                                    className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-slate-900 text-white border-2 border-white/20 flex items-center justify-center text-sm shadow-xl active:scale-90 z-50 cursor-pointer"
+                                >
+                                    <i className="bi bi-x-lg font-bold"></i>
+                                </button>
+
+                                <div className={`w-full h-28 rounded-2xl flex items-center justify-center border mb-4 relative overflow-hidden bg-slate-950/80 ${
+                                    selectedProduct.side === 'ALPHA' ? 'border-cyan-500/30' : 'border-amber-500/30'
+                                }`}>
+                                    <i className={`bi ${selectedProduct.icon} text-4xl ${
+                                        selectedProduct.side === 'ALPHA' ? selectedProduct.color : 'text-amber-400'
+                                    } drop-shadow-[0_0_12px_currentColor]`}></i>
+                                    <span className="absolute bottom-2 right-3 text-[9px] font-bold font-space opacity-20 tracking-widest">{selectedProduct.code}</span>
+                                </div>
+
+                                <div className="text-center mb-4">
+                                    <h2 className="text-lg font-black font-space tracking-tight uppercase leading-none">{selectedProduct.title}</h2>
+                                    <p className={`text-[9px] font-bold tracking-widest uppercase mt-1.5 ${
+                                        selectedProduct.side === 'ALPHA' ? 'text-cyan-400' : 'text-amber-400'
+                                    }`}>
+                                        {selectedProduct.spec}
+                                    </p>
+                                </div>
+
+                                <p className="text-[11px] text-slate-300 leading-relaxed text-center px-1 mb-5 opacity-90">
+                                    {selectedProduct.detail}
+                                </p>
+
+                                <div className="border-t border-white/10 pt-4 flex flex-col space-y-2">
+                                    <div className="flex justify-between items-center px-1">
+                                        <span className="text-[8px] font-bold font-space text-white/40 uppercase tracking-wider">VALOR ESTRUCTURA</span>
+                                        <span className="text-xl font-black font-space text-white tracking-tight">{selectedProduct.price}</span>
+                                    </div>
+                                    
+                                    <button className={`w-full h-11 rounded-xl font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-95 mt-1 ${
+                                        selectedProduct.side === 'ALPHA'
+                                            ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_20px_rgba(34,211,238,0.4)]'
+                                            : 'bg-amber-500 text-slate-950 shadow-[0_4px_20px_rgba(245,158,11,0.4)]'
+                                    }`}>
+                                        <i className="bi bi-lightning-charge-fill"></i>
+                                        <span>INYECTAR EN NAVE</span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    )}
+
+                    {/* BARRA INFERIOR DE NAVEGACIÓN */}
+                    <nav className="h-16 w-full bg-slate-950 border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
+                        <div className="flex flex-col items-center text-cyan-400 relative cursor-pointer">
+                            <i className="bi bi-cart3 text-lg"></i>
+                            <span className="text-[8px] font-bold tracking-wider mt-0.5 font-space">CARRITO</span>
+                            <span className="absolute top-0 right-3 bg-red-500 text-white font-bold text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-space">3</span>
+                        </div>
+                        <div className="flex flex-col items-center hover:text-white transition-colors cursor-pointer">
+                            <i className="bi bi-person text-lg"></i>
+                            <span className="text-[8px] font-medium tracking-wider mt-0.5 uppercase">PERFIL</span>
+                        </div>
+                        <div className="flex flex-col items-center hover:text-white transition-colors relative cursor-pointer">
+                            <i className="bi bi-bell text-lg"></i>
+                            <span className="text-[8px] font-medium tracking-wider mt-0.5 uppercase">NOTIFICACIONES</span>
+                            <span className="absolute top-1 right-5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                        </div>
+                    </nav>
+
                 </div>
             );
         }
+
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        root.render(<GonmoNaveSplit />);
     </script>
 </body>
 </html>
