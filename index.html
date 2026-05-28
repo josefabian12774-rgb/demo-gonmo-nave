@@ -29,7 +29,7 @@
             overflow-x: hidden;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            padding-top: 24px;
+            padding-top: 50px; /* Ajusté el padding para que el contenido no quede pegado al logo */
         }
         .col-nave::-webkit-scrollbar { display: none; }
 
@@ -140,17 +140,16 @@
             return (
                 <div className="w-full h-full flex flex-col relative bg-slate-950">
                     
+                    {/* ENCABEZADO */}
                     <header className="h-16 w-full flex items-center justify-between px-4 bg-slate-950/95 border-b border-white/10 z-50 backdrop-blur-md">
-                        <div className="flex items-center space-x-2">
-                            <i className="bi bi-list text-xl text-white"></i>
-                        </div>
-                        
-                        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
-                            <img src="./logo.JPG" alt="Logo" className="h-16 w-16 object-contain" />
-                        </div>
-
+                        <i className="bi bi-list text-xl text-white"></i>
                         <i className="bi bi-search text-lg text-white opacity-80"></i>
                     </header>
+
+                    {/* LOGO SUPERPUESTO (CAPA SUPERIOR) */}
+                    <div className="fixed top-2 left-1/2 transform -translate-x-1/2 z-[60] pointer-events-none">
+                        <img src="./logo.JPG" alt="Logo" className="h-20 w-20 object-contain" />
+                    </div>
 
                     <main className="flex-1 w-full flex relative overflow-hidden">
                         
@@ -160,22 +159,12 @@
                             </div>
                             <div className="space-y-4 pb-28">
                                 {productosAlpha.map(p => (
-                                    <div 
-                                        key={p.id} 
-                                        onClick={() => setSelectedProduct(p)}
-                                        className="card-alpha-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95"
-                                    >
+                                    <div key={p.id} onClick={() => setSelectedProduct(p)} className="card-alpha-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95">
                                         <div className="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-950/60 border border-cyan-500/20">
                                             <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
-                                            <span className="absolute bottom-1 right-2 text-[8px] font-bold font-space text-cyan-500/30 tracking-widest">{p.code}</span>
                                         </div>
                                         <div className="mt-2">
                                             <h3 className="text-xs font-black tracking-tight text-white uppercase truncate">{p.title}</h3>
-                                            <p className="text-[8px] font-bold text-cyan-400/80 tracking-wider uppercase mt-0.5">{p.spec}</p>
-                                        </div>
-                                        <div className="flex items-center justify-between mt-2 pt-1 border-t border-white/5">
-                                            <span className="text-xs font-black font-space text-white">{p.price}</span>
-                                            <span className="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-[10px] shadow-lg"><i className="bi bi-eye-fill"></i></span>
                                         </div>
                                     </div>
                                 ))}
@@ -188,22 +177,12 @@
                             </div>
                             <div className="space-y-4 pb-28">
                                 {productosPractica.map(p => (
-                                    <div 
-                                        key={p.id} 
-                                        onClick={() => setSelectedProduct(p)}
-                                        className="card-practica-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95"
-                                    >
+                                    <div key={p.id} onClick={() => setSelectedProduct(p)} className="card-practica-silicon rounded-2xl p-3 flex flex-col justify-between h-[210px] cursor-pointer transition-transform active:scale-95">
                                         <div className="w-full h-24 rounded-xl flex flex-col items-center justify-center relative bg-slate-100/90 border border-slate-950/15">
                                             <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
-                                            <span className="absolute bottom-1 right-2 text-[8px] font-bold font-space text-slate-950/20 tracking-widest">{p.code}</span>
                                         </div>
                                         <div className="mt-2">
                                             <h3 className="text-xs font-black tracking-tight text-slate-900 uppercase truncate">{p.title}</h3>
-                                            <p className="text-[8px] font-black text-slate-800 tracking-wider uppercase mt-0.5">{p.spec}</p>
-                                        </div>
-                                        <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-300">
-                                            <span className="text-xs font-black font-space text-slate-900">{p.price}</span>
-                                            <span className="w-6 h-6 rounded-full bg-slate-950 text-white flex items-center justify-center text-[10px] shadow-md"><i className="bi bi-eye-fill"></i></span>
                                         </div>
                                     </div>
                                 ))}
@@ -212,95 +191,27 @@
 
                         <div className="astro-center">
                             <div className="hologram-robot-box">
-                                <img 
-                                    src="./robot.gif" 
-                                    className="w-full h-full object-contain block select-none"
-                                    alt="Astro"
-                                />
+                                <img src="./robot.gif" className="w-full h-full object-contain block select-none" alt="Astro" />
                             </div>
                             <div className="w-14 h-1 bg-cyan-400/40 rounded-full mt-0.5 hologram-glow shadow-[0_0_10px_#22d3ee]"></div>
                         </div>
-
                     </main>
-
-                    {selectedProduct && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/85 backdrop-blur-md">
-                            <div className="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
-                            
-                            <div className={`w-full max-w-[315px] rounded-3xl p-5 relative z-10 text-white animate-quantum ${
-                                selectedProduct.side === 'ALPHA' ? 'premium-modal-alpha' : 'premium-modal-practica'
-                            }`}>
-                                
-                                <button 
-                                    onClick={() => setSelectedProduct(null)}
-                                    className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-slate-900 text-white border-2 border-white/20 flex items-center justify-center text-sm shadow-xl active:scale-90 z-50 cursor-pointer"
-                                >
-                                    <i className="bi bi-x-lg font-bold"></i>
-                                </button>
-
-                                <div className={`w-full h-28 rounded-2xl flex items-center justify-center border mb-4 relative overflow-hidden bg-slate-950/80 ${
-                                    selectedProduct.side === 'ALPHA' ? 'border-cyan-500/30' : 'border-amber-500/30'
-                                }`}>
-                                    <i className={`bi ${selectedProduct.icon} text-4xl ${
-                                        selectedProduct.side === 'ALPHA' ? selectedProduct.color : 'text-amber-400'
-                                    } drop-shadow-[0_0_12px_currentColor]`}></i>
-                                    <span className="absolute bottom-2 right-3 text-[9px] font-bold font-space opacity-20 tracking-widest">{selectedProduct.code}</span>
-                                </div>
-
-                                <div className="text-center mb-4">
-                                    <h2 className="text-lg font-black font-space tracking-tight uppercase leading-none">{selectedProduct.title}</h2>
-                                    <p className={`text-[9px] font-bold tracking-widest uppercase mt-1.5 ${
-                                        selectedProduct.side === 'ALPHA' ? 'text-cyan-400' : 'text-amber-400'
-                                    }`}>
-                                        {selectedProduct.spec}
-                                    </p>
-                                </div>
-
-                                <p className="text-[11px] text-slate-300 leading-relaxed text-center px-1 mb-5 opacity-90">
-                                    {selectedProduct.detail}
-                                </p>
-
-                                <div className="border-t border-white/10 pt-4 flex flex-col space-y-2">
-                                    <div className="flex justify-between items-center px-1">
-                                        <span className="text-[8px] font-bold font-space text-white/40 uppercase tracking-wider">VALOR ESTRUCTURA</span>
-                                        <span className="text-xl font-black font-space text-white tracking-tight">{selectedProduct.price}</span>
-                                    </div>
-                                    
-                                    <button className={`w-full h-11 rounded-xl font-space font-black text-xs tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-95 mt-1 ${
-                                        selectedProduct.side === 'ALPHA'
-                                            ? 'bg-cyan-400 text-slate-950 shadow-[0_4px_20px_rgba(34,211,238,0.4)]'
-                                            : 'bg-amber-500 text-slate-950 shadow-[0_4px_20px_rgba(245,158,11,0.4)]'
-                                    }`}>
-                                        <i className="bi bi-lightning-charge-fill"></i>
-                                        <span>INYECTAR EN NAVE</span>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    )}
 
                     <nav className="h-16 w-full bg-slate-950 border-t border-white/10 flex items-center justify-around text-slate-400 z-50">
                         <div className="flex flex-col items-center text-cyan-400 relative cursor-pointer">
                             <i className="bi bi-cart3 text-lg"></i>
-                            <span className="text-[8px] font-bold tracking-wider mt-0.5 font-space">CARRITO</span>
-                            <span className="absolute top-0 right-3 bg-red-500 text-white font-bold text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-space">3</span>
                         </div>
                         <div className="flex flex-col items-center hover:text-white transition-colors cursor-pointer">
                             <i className="bi bi-person text-lg"></i>
-                            <span className="text-[8px] font-medium tracking-wider mt-0.5 uppercase">PERFIL</span>
                         </div>
                         <div className="flex flex-col items-center hover:text-white transition-colors relative cursor-pointer">
                             <i className="bi bi-bell text-lg"></i>
-                            <span className="text-[8px] font-medium tracking-wider mt-0.5 uppercase">NOTIFICACIONES</span>
-                            <span className="absolute top-1 right-5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                         </div>
                     </nav>
 
                 </div>
             );
         }
-
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<GonmoNaveSplit />);
     </script>
