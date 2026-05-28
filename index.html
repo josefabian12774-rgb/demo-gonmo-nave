@@ -13,16 +13,11 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Space+Grotesk:wght@700;900&display=swap');
         
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; }
-        .font-space { font-family: 'Space Grotesk', sans-serif; }
-        .col-nave { height: calc(100vh - 128px); overflow-y: auto; scroll-behavior: smooth; padding-top: 24px; }
+        .col-nave { height: calc(100vh - 128px); overflow-y: auto; scroll-behavior: smooth; padding-top: 10px; }
         .col-nave::-webkit-scrollbar { display: none; }
-        .silicon-alpha { background-color: #060b19; }
-        .silicon-practica { background-color: #d9a406; }
-        .card-alpha-silicon { background: linear-gradient(135deg, #0f172a 0%, #020617 100%); border: 2px solid rgba(6, 182, 212, 0.2); }
-        .card-practica-silicon { background: #ffffff; border: 2px solid #1e293b; }
         
         @keyframes pushUpQuantum {
-            0 { transform: scale(0.85) translateY(40px); opacity: 0; }
+            0 { transform: scale(0.95) translateY(20px); opacity: 0; }
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
         .animate-quantum { animation: pushUpQuantum 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
@@ -32,51 +27,37 @@
     <div id="root" class="w-full h-full"></div>
 
     <script type="text/babel">
-        function GonmoNaveSplit() {
-            const productosAlpha = [
-                { id: 1, title: "NIGHTHAWK", icon: "bi-mouse3", color: "text-cyan-400" },
-                { id: 2, title: "TITAN RDX", icon: "bi-gpu-card", color: "text-purple-400" },
-                { id: 3, title: "K-BOARD 75", icon: "bi-keyboard", color: "text-emerald-400" }
-            ];
-
-            const productosPractica = [
-                { id: 4, title: "DRILL 18V", icon: "bi-nut", color: "text-slate-900" },
-                { id: 5, title: "AMBI-LIGHT", icon: "bi-lightbulb", color: "text-slate-900" },
-                { id: 6, title: "ROUTER CNC", icon: "bi-cpu", color: "text-slate-900" }
-            ];
-
+        function GonmoNave() {
             return (
                 <div className="w-full h-full flex flex-col bg-slate-950">
-                    {/* Header corregido: el logo es parte del flujo, eliminando el vacío y el choque absoluto */}
-                    <header className="h-20 w-full flex items-center justify-between px-4 bg-slate-950 border-b border-white/10 z-50">
-                        <i className="bi bi-list text-xl text-white"></i>
+                    {/* Header corregido: logo integrado para eliminar el espacio vacío */}
+                    <header className="h-20 w-full flex items-center justify-between px-4 border-b border-white/10 shrink-0">
+                        <i className="bi bi-list text-xl"></i>
                         <img src="./logo.JPG" alt="Logo" className="h-16 w-16 object-contain" />
-                        <i className="bi bi-search text-lg text-white"></i>
+                        <i className="bi bi-search text-xl"></i>
                     </header>
 
                     <main className="flex-1 w-full flex overflow-hidden">
-                        <div className="w-1/2 col-nave silicon-alpha px-2">
-                            {productosAlpha.map(p => (
-                                <div key={p.id} className="card-alpha-silicon rounded-2xl p-4 mb-4 animate-quantum">
-                                    <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
-                                    <h3 className="text-xs font-black text-white mt-2">{p.title}</h3>
-                                </div>
-                            ))}
+                        <div className="w-1/2 col-nave bg-slate-900 border-r border-white/10 px-2 animate-quantum">
+                            <div className="text-center py-2 text-[10px] text-cyan-400 font-black tracking-widest">// SILICIO ALPHA</div>
+                            {/* Contenido aquí */}
                         </div>
-                        <div className="w-1/2 col-nave silicon-practica px-2">
-                            {productosPractica.map(p => (
-                                <div key={p.id} className="card-practica-silicon rounded-2xl p-4 mb-4 animate-quantum">
-                                    <i className={`bi ${p.icon} text-3xl ${p.color}`}></i>
-                                    <h3 className="text-xs font-black text-slate-900 mt-2">{p.title}</h3>
-                                </div>
-                            ))}
+                        <div className="w-1/2 col-nave bg-yellow-500 px-2 animate-quantum">
+                            <div className="text-center py-2 text-[10px] text-slate-950 font-black tracking-widest">// SILICIO PRÁCTICA</div>
+                            {/* Contenido aquí */}
                         </div>
                     </main>
+
+                    <nav className="h-16 w-full border-t border-white/10 flex items-center justify-around text-slate-400">
+                        <i className="bi bi-cart3 text-xl"></i>
+                        <i className="bi bi-person text-xl"></i>
+                        <i className="bi bi-bell text-xl"></i>
+                    </nav>
                 </div>
             );
         }
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<GonmoNaveSplit />);
+        root.render(<GonmoNave />);
     </script>
 </body>
 </html>
